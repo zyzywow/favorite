@@ -1,0 +1,28 @@
+<%- include("include/header");%>
+
+<main id="main">
+  <div id="contents">
+    <h2 class="title"><%= title %></h2>
+    <ul class="blogList">
+      <% list.forEach((item,idx) => { %>
+      <li>
+        <a href="/detail/<%= item.title %>">
+          <div class="img"><img src="<%= item.image %>" alt="" /></div>
+          <div class="txt">
+            <h3 class="blogTitle"><%= item.title %></h3>
+            <p class="date"><%= item.date %></p>
+          </div>
+        </a>
+        <!-- <div class="desc"><%- item.desc %></div> -->
+        <!-- "%="은 값그대로출력(태그있으면태그까지) 태그없이값출력"%-" -->
+      </li>
+      <% }) %>
+    </ul>
+    <div class="btns">
+      <a href="/">메인페이지</a>
+      <a href="/insert">글쓰기</a>
+    </div>
+  </div>
+</main>
+
+<%- include("include/footer");%>

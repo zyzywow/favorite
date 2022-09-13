@@ -1,0 +1,95 @@
+<%- include("include/header");%>
+
+<main id="main">
+  <div id="contents">
+    <h2 class="title"><%= title %></h2>
+    <form action="/register" method="POST" id="join" class="formBox" enctype="multipart/form-data">
+      <!-- enctype="multipart/form-data" - 첨부file전송할때필수!! -->
+      <div class="inputBox">
+        <label>
+          <span class="label">제목</span>
+          <input type="text" id="title" name="title" placeholder="제목을 입력하세요." />
+        </label>
+      </div>
+      <div class="inputBox">
+        <label>
+          <span class="label">날짜</span>
+          <input type="text" id="date" name="date" placeholder="날짜" />
+        </label>
+      </div>
+      <div class="inputBox">
+        <label>
+          <span class="label">카테고리</span>
+          <div class="categoryList">
+            <ul>
+              <li><span>여행</span><input type="checkbox" value="여행" name="category" /></li>
+              <li><span>일상</span><input type="checkbox" value="일상" name="category" /></li>
+              <li><span>맛집</span><input type="checkbox" value="맛집" name="category" /></li>
+              <li><span>영화</span><input type="checkbox" value="영화" name="category" /></li>
+              <li><span>기타</span><input type="checkbox" value="기타" name="category" /></li>
+            </ul>
+          </div>
+        </label>
+      </div>
+      <div class="inputBox">
+        <label>
+          <span class="label">내용</span>
+          <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
+        </label>
+      </div>
+      <div class="inputBox">
+        <label>
+          <span class="label">별점</span>
+          <input type="number" max="5" min="0" step="0.1" id="point" name="point" />
+        </label>
+      </div>
+      <div class="inputBox">
+        <label>
+          <span class="label">대표이미지</span>
+          <input type="file" name="image" id="image" />
+        </label>
+      </div>
+      <div class="btns">
+        <button id="btnJoin">확인</button>
+        <button type="reset" class="red"><a href="/" class="red02">취소</a></button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script>
+  const date = document.querySelector("#date");
+  const picker = new Lightpick({ field: date, format: "YYYY/MM/DD hh:mm" });
+  // $("#btnJoin").on("click", function () {
+  //   if (!confirm("등록 하시겠습니까 ?")) {
+  //     return false;
+  //   }
+  // });
+
+  $("#desc").summernote({
+    placeholder: "내용을 입력해주세요.",
+    height: 300,
+    callbacks: {
+      onImageUpload: function (files) {
+        sendImageClouduinary(files[0], this);
+      },
+    },
+  });
+  function sendImageClouduinary(file, editor) {
+    const sendImgData = new FormData(); // form없이 post로 데이터 날리는 방법.
+    // 서버로 ajax 통해서 데이터를 보내서 server에서 cloudinary에 이미이 업로드를 하고 업로드가 되고 나면 올라간 이미지의 절대 경로를 결과값으로 받아서 이미지 src로 대체
+    sendImgData.append("summerNoteImg", file); // = <input type="file" name="summerNoteImg" id="image" />
+    $.ajax({
+      url: "/summerNoteInsertImg",
+      data: sendImgData,
+      method: "POST",
+      contentType: false, // default = (true) application/x-www-form-urlencoded
+      processData: false, // default = (true) querystring 방식으로 가는 걸 막기.
+      enctype: "multipart/form-data",
+    }).done((response) => {
+      // console.log(response.cloudinaryImgSrc);
+      $(editor).summernote("editor.insertImage", response.cloudinaryImgSrc);
+    });
+  }
+</script>
+<%- include("include/footer");%>
