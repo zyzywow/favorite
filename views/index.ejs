@@ -1,11 +1,11 @@
 <%- include("include/header"); %>
 <main id="main">
   <div id="contents">
-    <h2 class="title"><%= title %></h2>
+    <!-- <h2 class="title"><%= title %></h2> -->
     <div class="mainImg"></div>
 
+    <% if(userInfo) { %>
     <div class="btns">
-      <% if(userInfo) { %>
       <a href="/mypage">마이페이지</a>
       <a href="/logout">로그아웃</a>
       <a href="/list">목록</a>
