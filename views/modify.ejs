@@ -1,6 +1,6 @@
 <%- include("include/header");%>
 <main id="main">
-  <div id="contents">
+  <div id="contents" class="section">
     <h2 class="title"><%= title %></h2>
 
     <form action="/modify" method="POST" id="join" class="formBox">
@@ -19,21 +19,23 @@
       <div class="inputBox">
         <label>
           <span class="label">Name</span>
-          <input type="text" id="userName" name="userName" placeholder="이름을 입력하세요." />
+          <input type="text" id="userName" name="userName" value="<%= userInfo.userName %>" placeholder="이름을 입력하세요." />
         </label>
       </div>
       <div class="inputBox">
         <label>
           <span class="label">Email</span>
-          <input type="text" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요." />
+          <input type="text" id="userEmail" name="userEmail" value="<%= userInfo.userEmail %>" placeholder="이메일을 입력하세요." />
         </label>
       </div>
       <div class="inputBox">
         <label>
           <span class="label">Address</span>
           <div>
-            <div class="zipCodeBox"><input type="text" id="zipCode" name="zipCode" placeholder="우편번호" readonly /> <button id="btnZipCode">우편번호 찾기</button></div>
-            <input type="text" id="address01" name="address01" />
+            <div class="zipCodeBox">
+              <input type="text" id="zipCode" name="zipCode" placeholder="우편번호" value="<%= userInfo.userZipcode %>" readonly /> <button id="btnZipCode">우편번호 찾기</button>
+            </div>
+            <input type="text" id="address01" name="address01" value="<%= userInfo.userAddress %>" />
             <input type="text" id="address02" name="address02" />
           </div>
         </label>
@@ -59,9 +61,9 @@
           </select>
         </label>
       </div>
-      <div class="btns">
+      <div class="formBtns">
         <button id="btnJoin">정보수정</button>
-        <button type="reset" class="red"><a href="/" class="red02">취소</a></button>
+        <button type="reset" class="red"><a href="/">취소</a></button>
       </div>
     </form>
   </div>

@@ -1,6 +1,6 @@
 <%- include("include/header");%>
 <main id="main">
-  <div id="contents">
+  <div id="contents" class="section">
     <h2 class="title"><%= title %></h2>
 
     <form action="/login" method="POST">
@@ -16,11 +16,28 @@
           <input type="password" id="userPW" name="userPW" placeholder="비밀번호를 입력하세요." />
         </label>
       </div>
-      <div class="btns">
-        <button>로그인</button>
-        <button type="reset" class="red"><a href="/" class="red02">취소</a></button>
+      <div class="formBtns">
+        <button id="btnLogin">로그인</button>
+        <button type="reset" class="red"><a href="/">취소</a></button>
       </div>
     </form>
   </div>
 </main>
+<script>
+  $("#btnLogin").on("click", () => {
+    $.ajax({
+      url: "/loginCheck",
+      method: "POST",
+      data: {
+        userID: $("#userID").val(),
+        userPW: $("#userPW").val(),
+      },
+    }).done((response) => {
+      if (response.isOk) {
+        alert("아이디 또는 비밀번호를 확인해주세요.");
+        $("#userID").focus();
+      }
+    });
+  });
+</script>
 <%- include("include/footer");%>

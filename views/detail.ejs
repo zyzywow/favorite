@@ -1,17 +1,18 @@
 <%- include("include/header");%>
 
 <main id="main">
-  <div id="contents">
+  <div id="contents" class="section">
     <h2 class="title"><%= title %></h2>
-    <div class="blogContents">
-      <h3 class="blogTitle"><%= data.title %></h3>
+    <div class="detailPage">
+      <h3 class="detailTitle"><%= data.title %></h3>
       <p class="date"><%= data.date %></p>
       <p class="point"><%= data.point %></p>
       <div class="desc"><%- data.desc %></div>
+      <div class="detailImg"><img src="<%= data.image %>" alt="" /></div>
     </div>
     <div class="btns">
       <a href="/">메인페이지</a>
-      <a href="/insert">글쓰기</a>
+      <a href="/delete">삭제</a>
     </div>
   </div>
 </main>

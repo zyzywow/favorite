@@ -2,6 +2,10 @@ body {
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   font-size: 16px;
   color: #111;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/main-bg.jpg);
+  background-size: cover;
+  background-position: 50%;
+  color: #fff;
 }
 
 a {
@@ -14,30 +18,86 @@ a {
 }
 
 #header {
-  height: 60px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #eee;
+  width: 100%;
+  position: relative;
+  margin-bottom: 50px;
+}
+#header #logo {
+  font-size: 20px;
+  margin-left: 30px;
+}
+
+.headerListBox {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.headerListBox .headerListTitle {
+  width: 200px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #111;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+  cursor: pointer;
+}
+.headerListBox .headerList {
+  width: 100%;
+  border: 2px solid #fff;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.headerListBox .headerList li {
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+}
+.headerListBox .headerList li a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.headerListBox .headerList li:hover {
   color: #fff;
-  font-size: 20px;
-  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.headerListBox:hover .headerList {
+  display: flex;
 }
 
 #footer {
   display: flex;
   justify-content: center;
+  width: 300px;
   font-weight: 500;
+  font-size: 12px;
   background-color: #111;
-  color: #fff;
-  height: 60px;
+  padding: 5px 0;
+  margin: 20px auto;
+  border-radius: 20px;
   align-items: center;
+}
+#footer p {
+  margin-bottom: 0;
 }
 
 #contents {
-  padding: 100px 0;
+  padding: 50px 0;
   width: 1200px;
-  margin: auto;
+  margin: 0 auto;
 }
 #contents .title {
   font-size: 36px;
@@ -47,14 +107,49 @@ a {
   border-bottom: 1px solid #ccc;
   padding-bottom: 50px;
 }
-#contents .mainImg {
-  margin: 0 auto;
-  width: 400px;
+#contents .inner .mainBox {
+  width: 500px;
   height: 500px;
-  background-size: cover;
-  border: none;
-  outline: none;
+  margin: 0 auto;
+  border: 5px solid #fff;
+  border-radius: 20px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+}
+#contents .inner .mainBox .txtBox {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+#contents .inner .mainBox .txtBox h2 {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+#contents .inner .mainBox .txtBox p {
+  font-size: 14px;
+}
+#contents .inner .mainBox .btnLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 300px;
+  height: 50px;
+  font-size: 20px;
+  font-weight: 500;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  border: 2px solid #fff;
   border-radius: 10px;
+  transition: all 0.2s ease;
+}
+#contents .inner .mainBox .btnLink:hover {
+  bottom: 25px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 #contents .btns {
   display: flex;
@@ -70,58 +165,24 @@ a {
   margin: 10px;
   width: 100px;
   height: 50px;
-  border: 1px solid #000;
-}
-#contents .btns .red02 {
-  border: none;
-}
-#contents .success {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  font-size: 48px;
-  padding: 100px 0;
-}
-#contents .success a {
-  margin-top: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  height: 50px;
-  border: 1px solid #000;
-  font-size: 24px;
+  background-color: #666;
+  border: 1px solid #fff;
+  color: #fff;
+  border-radius: 10px;
 }
 #contents .detailPage {
-  padding: 50px 0;
-}
-#contents .detailPage ul li {
+  padding: 0 30px;
   display: flex;
-  font-weight: 700;
-  font-size: 20px;
-  padding: 10px;
+  flex-direction: column;
+  align-items: center;
 }
-#contents .detailPage ul li span {
-  display: flex;
-  font-weight: 500;
-  width: 100px;
+#contents .detailPage .detailImg {
+  max-width: 700px;
+  height: auto;
 }
-#contents .detailPage ul li img {
-  width: auto;
-  height: 1000px;
-  object-fit: cover;
-}
-#contents .detailPage ul .desc {
-  display: block;
-  font-size: 16px;
-  line-height: 1.5;
-  word-break: keep-all;
-}
-#contents .detailPage ul .desc span {
-  font-size: 20px;
-  margin-bottom: 20px;
+#contents .detailPage .detailImg img {
+  width: 100%;
+  height: auto;
 }
 #contents .myPage {
   padding-bottom: 60px;
@@ -169,8 +230,14 @@ a {
   font-size: 14px;
 }
 
+.section {
+  margin-top: 100px;
+  background-color: #fff;
+  color: #111;
+}
+
 form .inputBox {
-  padding: 30px 0;
+  padding: 30px;
   border-bottom: 1px solid #ccc;
 }
 form .inputBox label {
@@ -234,25 +301,34 @@ form .inputBox #userJob {
   font-weight: 500;
   padding: 5px;
 }
-form .btns {
+form .formBtns {
   margin-top: 50px;
   display: flex;
   justify-content: center;
 }
-form .btns button {
-  width: 200px;
-  height: 70px;
-  margin: 0 30px;
+form .formBtns button {
+  width: 150px;
+  height: 50px;
+  margin: 0 15px;
   border-radius: 20px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   font-size: 16px;
   font-weight: 700;
-}
-form .btns .red {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+form .formBtns .red {
   background-color: rgb(136, 42, 42);
   color: #fff;
+}
+form .formBtns .red a {
+  display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .table {

@@ -1,7 +1,7 @@
 <%- include("include/header");%>
 
 <main id="main">
-  <div id="contents">
+  <div id="contents" class="section">
     <h2 class="title"><%= title %></h2>
     <form action="/register" method="POST" id="join" class="formBox" enctype="multipart/form-data">
       <!-- enctype="multipart/form-data" - 첨부file전송할때필수!! -->
@@ -49,9 +49,9 @@
           <input type="file" name="image" id="image" />
         </label>
       </div>
-      <div class="btns">
+      <div class="formBtns">
         <button id="btnJoin">확인</button>
-        <button type="reset" class="red"><a href="/" class="red02">취소</a></button>
+        <button type="reset" class="red"><a href="/">취소</a></button>
       </div>
     </form>
   </div>
@@ -60,11 +60,11 @@
 <script>
   const date = document.querySelector("#date");
   const picker = new Lightpick({ field: date, format: "YYYY/MM/DD hh:mm" });
-  // $("#btnJoin").on("click", function () {
-  //   if (!confirm("등록 하시겠습니까 ?")) {
-  //     return false;
-  //   }
-  // });
+  $("#btnJoin").on("click", function () {
+    if (!confirm("등록 하시겠습니까 ?")) {
+      return false;
+    }
+  });
 
   $("#desc").summernote({
     placeholder: "내용을 입력해주세요.",

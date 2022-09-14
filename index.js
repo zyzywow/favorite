@@ -75,6 +75,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // post에서 보낸 데이터 req.body로 받을려면 있어야함
 app.use(express.static(path.join(__dirname, "/public")));
 app.use("/upload", express.static(path.join(__dirname, "/upload")));
+
 app.set("port", process.env.PORT || 8099);
 const PORT = app.get("port");
 
@@ -96,7 +97,7 @@ const storage = multer.diskStorage({
 const fileUpload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
-  res.render("index", { title: "......", userInfo: req.user });
+  res.render("index", { title: "loellem emememem roor", userInfo: req.user });
 });
 app.get("/login", (req, res) => {
   res.render("login", { title: "login" });
@@ -108,6 +109,18 @@ app.post(
     successRedirect: "/",
   })
 );
+app.post("/loginCheck", (req, res) => {
+  const userID = req.body.userID;
+  const userPW = req.body.userPW;
+  db.collection("member").findOne({ userID: userID, userPW: userPW }, (err, result) => {
+    console.log(result);
+    if (result === null) {
+      res.json({ isOk: true });
+    } else {
+      res.json({ isOk: false });
+    }
+  });
+});
 app.get("/logout", (req, res) => {
   if (req.user) {
     req.session.destroy();
@@ -117,6 +130,17 @@ app.get("/logout", (req, res) => {
 });
 app.get("/join", (req, res) => {
   res.render("join", { title: "join" });
+});
+app.post("/idCheck", (req, res) => {
+  const userID = req.body.userID;
+  db.collection("member").findOne({ userID: userID }, (err, result) => {
+    console.log(result);
+    if (result === null) {
+      res.json({ isOk: true });
+    } else {
+      res.json({ isOk: false });
+    }
+  });
 });
 app.post("/registerUSER", (req, res) => {
   const userID = req.body.userID;
@@ -160,8 +184,9 @@ app.get("/mypage", isLogged, (req, res) => {
   // console.log(req.user);
   res.render("mypage", { title: "mypage", userInfo: req.user });
 });
-app.get("/modify", (req, res) => {
-  res.render("modify", { title: "modify" });
+app.get("/modify", isLogged, (req, res) => {
+  // console.log(req.user);
+  res.render("modify", { title: "modify", userInfo: req.user });
 });
 app.post("/modify", (req, res) => {
   const userID = req.body.userID;
@@ -217,17 +242,13 @@ function isLogged(req, res, next) {
     res.send(`<script>alert("로그인 먼저 하셔야 합니다.");location.href="/login";</script>`);
   }
 }
+
+// =====================회원관련===================
+
 app.get("/insert", (req, res) => {
   res.render("insert", { title: "글 쓰기" });
 });
 
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    successRedirect: "/",
-  })
-);
 app.post("/register", fileUpload.single("image"), (req, res) => {
   const title = req.body.title;
   const date = req.body.date;
@@ -236,16 +257,29 @@ app.post("/register", fileUpload.single("image"), (req, res) => {
   const point = req.body.point;
   const image = req.file.filename;
   cloudinary.uploader.upload(req.file.path, (result) => {
-    console.log(db.collection("blog"));
-    db.collection("blog").insertOne({
-      title: title,
-      date: date,
-      category: category,
-      desc: desc,
-      point: point,
-      image: result.url,
+    // console.log(db.collection("blog"));
+    db.collection("blogCounter").findOne({ name: "total" }, (err, result01) => {
+      const count = result01.count;
+      db.collection("blog").insertOne(
+        {
+          title: title,
+          date: date,
+          category: category,
+          desc: desc,
+          point: point,
+          image: result.url,
+          id: count,
+        },
+        (err, result) => {
+          db.collection("blogCounter").updateOne({ name: "total" }, { $inc: { count: 1 } }, (err, result) => {
+            if (err) {
+              console.log(err);
+            }
+            res.redirect("/list");
+          });
+        }
+      );
     });
-    res.send("잘들어갔습니다.");
   });
 });
 
@@ -256,28 +290,19 @@ app.get("/list", (req, res) => {
       res.render("list", { title: "list", list: result });
     });
 });
-app.get("/detail/:title", (req, res) => {
-  const title = req.params.title;
-  db.collection("blog").findOne({ title: title }, (err, result) => {
+app.get("/detail/:id", (req, res) => {
+  const _id = parseInt(req.params.id);
+  db.collection("blog").findOne({ id: _id }, (err, result) => {
     if (result) {
       res.render("detail", { title: "detail", data: result });
+    } else {
+      console.log("error");
     }
   });
 });
 app.post("/summerNoteInsertImg", fileUpload.single("summerNoteImg"), (req, res) => {
   cloudinary.uploader.upload(req.file.path, (result) => {
     res.json({ cloudinaryImgSrc: result.url });
-  });
-});
-app.post("/idCheck", (req, res) => {
-  const userID = req.body.userID;
-  db.collection("member").findOne({ userID: userID }, (err, result) => {
-    console.log(result);
-    if (result === null) {
-      res.json({ isOk: true });
-    } else {
-      res.json({ isOk: false });
-    }
   });
 });
 

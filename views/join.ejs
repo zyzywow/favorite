@@ -1,6 +1,6 @@
 <%- include("include/header");%>
 <main id="main">
-  <div id="contents">
+  <div id="contents" class="section">
     <h2 class="title"><%= title %></h2>
 
     <form action="/registerUSER" method="POST" id="join" class="formBox">
@@ -16,14 +16,20 @@
       </div>
       <div class="inputBox">
         <label>
-          <span class="label">Password</span>
+          <span class="label">비밀번호</span>
           <input type="password" id="userPW" name="userPW" placeholder="비밀번호를 입력하세요." />
         </label>
       </div>
       <div class="inputBox">
         <label>
-          <span class="label">Name</span>
-          <input type="text" id="userName" name="userName" placeholder="이름을 입력하세요." />
+          <span class="label">비밀번호 확인</span>
+          <input type="password" id="userPW02" name="userPW" placeholder="비밀번호를 입력하세요." />
+        </label>
+      </div>
+      <div class="inputBox">
+        <label>
+          <span class="label">닉네임</span>
+          <input type="text" id="userName" name="userName" placeholder="닉네임을 입력하세요." />
         </label>
       </div>
       <div class="inputBox">
@@ -34,7 +40,7 @@
       </div>
       <div class="inputBox">
         <label>
-          <span class="label">Address</span>
+          <span class="label">주소</span>
           <div>
             <div class="zipCodeBox"><input type="text" id="zipCode" name="zipCode" placeholder="우편번호" readonly /> <button id="btnZipCode">우편번호 찾기</button></div>
             <input type="text" id="address01" name="address01" />
@@ -63,7 +69,7 @@
           </select>
         </label>
       </div>
-      <div class="btns">
+      <div class="formBtns">
         <button id="btnJoin">회원가입</button>
         <button type="reset" class="red"><a href="/" class="red02">취소</a></button>
       </div>
@@ -87,23 +93,6 @@
     // form안에 있는 모든버튼은 submit역할을 해 버튼누르는 순간 다른페이지로 날아가는데 그것을방지하기위해 return false
   });
 
-  // $("#btnJoin").on("click", () => {
-  //   $.ajax({
-  //     url: "/registerAjax",
-  //     data: {
-  //       userID: $("#userID").val(),
-  //       userPW: $("#userPW").val(),
-  //     },
-  //     method: "POST",
-  //   }).done((response) => {
-  //     console.log(response);
-  //     if (response.isJoin) {
-  //       // alert("회원가입이 완료되었습니다.");
-  //       // location.href = "/login";
-  //       location.href = "/success";
-  //     }
-  //   });
-  // });
   // ----------------------- 아이디 중복확인 -------
   $("#btnIdCheck").on("click", () => {
     if ($("#userID").val().length > 7) {
@@ -140,29 +129,6 @@
     return false;
   });
 
-  // $("#userID").on("keyup", () => {
-  //   if ($("#userID").val().length > 7) {
-  //     $.ajax({
-  //       url: "/idCheck",
-  //       method: "POST",
-  //       data: {
-  //         userID: $("#userID").val(),
-  //       },
-  //     }).done((response) => {
-  //       // console.log(response);
-  //       if (response.isOk) {
-  //         console.log(response.isOk);
-  //         $("#userID").val("");
-  //         $("#userID").focus();
-  //       } else {
-  //         alert("아이디는 8글자 이상이어야 합니다.");
-  //         $("#userID").focus();
-  //       }
-  //     });
-  //     return false;
-  //   }
-  // });
-
   $("#btnJoin").on("click", () => {
     if ($("#userID").val().trim().length < 8) {
       alert("아이디는 최소 8자 이상이어야 합니다.");
@@ -173,6 +139,10 @@
       return false;
     } else if ($("#userPW").val().trim().length < 8) {
       alert("비밀번호는 최소 8자 이상이어야 합니다.");
+      $("#userPW").focus();
+      return false;
+    } else if ($("#userPW").val() !== $("#userPW02").val()) {
+      alert("비밀번호를 동일하게 입력해주세요.");
       $("#userPW").focus();
       return false;
     } else if ($("#userName").val().trim().length < 2) {
