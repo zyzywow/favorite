@@ -74,6 +74,7 @@ MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, c
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // post에서 보낸 데이터 req.body로 받을려면 있어야함
 app.use(express.static(path.join(__dirname, "/public")));
+
 app.use("/upload", express.static(path.join(__dirname, "/upload")));
 
 app.set("port", process.env.PORT || 8099);
@@ -99,13 +100,13 @@ const fileUpload = multer({ storage: storage });
 app.get("/", (req, res) => {
   res.render("index", { title: "loellem emememem roor", userInfo: req.user });
 });
-app.get("/login", (req, res) => {
-  res.render("login", { title: "login" });
-});
+// app.get("/login", (req, res) => {
+//   res.render("login", { title: "login" });
+// });
 app.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "/login",
+    failureRedirect: "/",
     successRedirect: "/",
   })
 );
@@ -239,14 +240,14 @@ function isLogged(req, res, next) {
   if (req.user) {
     next(); // next 필수!!!! 안적으면 다음단계로들어갈수없음
   } else {
-    res.send(`<script>alert("로그인 먼저 하셔야 합니다.");location.href="/login";</script>`);
+    res.send(`<script>alert("로그인 먼저 하셔야 합니다.");location.href="/";</script>`);
   }
 }
 
 // =====================회원관련===================
 
-app.get("/insert", (req, res) => {
-  res.render("insert", { title: "글 쓰기" });
+app.get("/insert", isLogged, (req, res) => {
+  res.render("insert", { title: "글 쓰기", userInfo: req.user });
 });
 
 app.post("/register", fileUpload.single("image"), (req, res) => {
@@ -287,7 +288,14 @@ app.get("/list", (req, res) => {
   db.collection("blog")
     .find()
     .toArray((err, result) => {
-      res.render("list", { title: "list", list: result });
+      res.render("list", { title: "list", list: result, userInfo: req.user });
+    });
+});
+app.get("/musicList", (req, res) => {
+  db.collection("blog")
+    .find()
+    .toArray((err, result) => {
+      res.render("musicList", { title: "musiclist", list: result, userInfo: req.user });
     });
 });
 app.get("/detail/:id", (req, res) => {

@@ -5,10 +5,10 @@ body {
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   font-size: $font-normal;
   color: $font-color;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/main-bg.jpg);
-  background-size: cover;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(#d88c9b, 0.7)), url(../images/main-bg.jpg);
+  background-size: contain;
   background-position: 50%;
-  // background-attachment: fixed;
+  background-attachment: fixed;
   color: #fff;
 }
 a {
@@ -20,17 +20,34 @@ a {
 }
 
 #header {
-  height: 50px;
+  height: 100px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid #eee;
+  justify-content: center;
+  background-color: rgba(#eee, 0.8);
   width: 100%;
   position: relative;
-  margin-bottom: 50px;
   #logo {
     font-size: 20px;
-    margin-left: 30px;
+    a {
+      display: block;
+      width: 150px;
+      height: 100px;
+      .img {
+        width: 100%;
+        height: 100%;
+        background-image: url("../images/logo01.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50%;
+        transition: all 0.2s ease;
+      }
+      &:hover {
+        .img {
+          background-image: url("../images/logo02.png");
+        }
+      }
+    }
   }
 }
 .headerListBox {
@@ -44,7 +61,7 @@ a {
   right: 0;
   .headerListTitle {
     width: 200px;
-    height: 50px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,6 +118,7 @@ a {
   padding: 50px 0;
   width: 1200px;
   margin: 0 auto;
+  height: 100vh;
 
   .title {
     font-size: 36px;
@@ -111,10 +129,12 @@ a {
     padding-bottom: 50px;
   }
   .inner {
+    display: flex;
+    justify-content: space-evenly;
     .mainBox {
       width: 500px;
       height: 500px;
-      margin: 0 auto;
+      // margin: 0 auto;
       border: 5px solid #fff;
       border-radius: 20px;
       position: relative;
@@ -145,19 +165,60 @@ a {
         font-size: 20px;
         font-weight: 500;
         left: 50%;
-        bottom: 20px;
+        bottom: 80px;
         transform: translateX(-50%);
         border: 2px solid #fff;
         border-radius: 10px;
         transition: all 0.2s ease;
 
         &:hover {
-          bottom: 25px;
+          bottom: 85px;
           background-color: rgba(0, 0, 0, 0.5);
         }
       }
     }
+
+    #loginBox {
+      width: 500px;
+      border: 5px solid #fff;
+      padding: 0 30px;
+      border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .inputBox {
+        label {
+          display: block;
+          .label {
+            color: #666;
+          }
+          input {
+            width: 100%;
+          }
+        }
+      }
+      #btnLogin {
+        font-family: "Noto Sans KR";
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+        width: 100px;
+        height: 50px;
+        background-color: #666;
+        border: 1px solid #fff;
+        color: #fff;
+        border-radius: 10px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+      .loginSuccess {
+        color: #111;
+      }
+    }
   }
+
   .btns {
     display: flex;
     justify-content: center;

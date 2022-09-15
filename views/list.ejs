@@ -1,4 +1,4 @@
-<%- include("include/header");%>
+<%- include("include/header"); %>
 
 <main id="main">
   <div id="contents" class="section">
@@ -14,10 +14,16 @@
       </li>
       <% }) %>
     </ul>
+    <% if(userInfo) { %>
     <div class="btns">
       <a href="/">메인페이지</a>
       <a href="/insert">글쓰기</a>
     </div>
+    <% } else { %>
+    <div class="btns">
+      <a href="/">메인페이지</a>
+    </div>
+    <%}%>
   </div>
 </main>
 

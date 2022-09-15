@@ -10,20 +10,67 @@
         </div>
         <a href="/list" class="btnLink">더 많은 자료 보러가기</a>
       </div>
+      <% if(userInfo) { %>
+
+      <div id="loginBox">
+        <div class="loginSuccess">
+          <span><%= userInfo.userName %> 님 반갑습니다.</span>
+        </div>
+        <div class="btns">
+          <a href="/mypage">마이페이지</a>
+          <a href="/logout">로그아웃</a>
+        </div>
+      </div>
+
+      <% } else { %>
+      <form action="/login" method="POST" id="loginBox">
+        <div class="inputBox">
+          <label>
+            <span class="label">ID</span>
+            <input type="text" id="userID" name="userID" placeholder="아이디를 입력하세요." />
+          </label>
+        </div>
+        <div class="inputBox">
+          <label>
+            <span class="label">Password</span>
+            <input type="password" id="userPW" name="userPW" placeholder="비밀번호를 입력하세요." />
+          </label>
+        </div>
+        <div class="btns">
+          <button id="btnLogin">로그인</button>
+          <a href="/join">회원가입</a>
+        </div>
+      </form>
+      <%}%>
     </div>
 
-    <% if(userInfo) { %>
-    <div class="btns">
+    <!-- <div class="btns">
       <a href="/mypage">마이페이지</a>
       <a href="/logout">로그아웃</a>
       <a href="/insert">글 쓰기</a>
-    </div>
-    <% } else { %>
-    <div class="btns">
+    </div> -->
+
+    <!-- <div class="btns">
       <a href="/join">회원가입</a>
       <a href="/login">로그인</a>
-    </div>
-    <%}%>
+    </div> -->
   </div>
 </main>
+<script>
+  $("#btnLogin").on("click", () => {
+    $.ajax({
+      url: "/loginCheck",
+      method: "POST",
+      data: {
+        userID: $("#userID").val(),
+        userPW: $("#userPW").val(),
+      },
+    }).done((response) => {
+      if (response.isOk) {
+        alert("아이디 또는 비밀번호를 확인해주세요.");
+        $("#userID").focus();
+      }
+    });
+  });
+</script>
 <%- include("include/footer"); %>
