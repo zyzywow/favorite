@@ -1,30 +1,73 @@
 <%- include("include/header"); %>
 
 <main id="main">
-  <div id="contents" class="section">
+  <div id="contents">
     <h2 class="title"><%= title %></h2>
+    <% if(userInfo) { %>
+    <div class="insertBtn">
+      <a href="/insert">글쓰기</a>
+    </div>
+    <% } else { %> <%}%>
+
+    <nav id="filter">
+      <h2 class="blind">filtering menu</h2>
+      <ul class="filterList">
+        <li class="on" data-filter="item">ALL</li>
+        <li data-filter="illustration">illustration</li>
+        <li data-filter="animetion">animetion</li>
+        <li data-filter="photo">photo</li>
+      </ul>
+    </nav>
     <ul class="blogList">
       <% list.forEach((item,idx) => { %>
-      <li>
+      <!-- <li>
         <a href="/detail/<%= item.id %>">
           <div class="img"><img src="<%= item.image %>" alt="" /></div>
         </a>
-        <!-- <div class="desc"><%- item.desc %></div> -->
-        <!-- "%="은 값그대로출력(태그있으면태그까지) 태그없이값출력"%-" -->
+        <div class="desc"><%- item.desc %></div>
+        "%="은 값그대로출력(태그있으면태그까지) 태그없이값출력"%-"
+      </li> -->
+      <li class="item <%= item.category %>">
+        <a
+          href="<%= item.image %>"
+          data-fancybox="<%= item.category %>"
+          data-caption="<%= item.title %>"
+        >
+          <div class="img">
+            <img src="<%= item.image %>" alt="" />
+          </div>
+          <div class="txt">
+            <h2 class="blogTitle"><%= item.title %></h2>
+            <p class="date"><%= item.date %></p>
+          </div>
+        </a>
       </li>
       <% }) %>
     </ul>
-    <% if(userInfo) { %>
-    <div class="btns">
-      <a href="/">메인페이지</a>
-      <a href="/insert">글쓰기</a>
-    </div>
-    <% } else { %>
-    <div class="btns">
-      <a href="/">메인페이지</a>
-    </div>
-    <%}%>
   </div>
 </main>
+<script>
+  const itemList = $("#contents .blogList");
+  const filterList = $("#filter li");
+  let grid = null;
+
+  itemList.imagesLoaded().always(function () {
+    grid = itemList.isotope({
+      itemSelector: ".item",
+      percentPosition: true,
+      layoutMode: "masonry",
+      getSortData: {
+        point: ".point .num parseFloat",
+      },
+    });
+  });
+  filterList.on("click", function () {
+    $(this).addClass("on").siblings().removeClass("on");
+    const filter = $(this).data("filter");
+    grid.isotope({
+      filter: `.${filter}`,
+    });
+  });
+</script>
 
 <%- include("include/footer");%>

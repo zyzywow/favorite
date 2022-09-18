@@ -1,7 +1,7 @@
 <%- include("include/header");%>
 
 <main id="main">
-  <div id="contents" class="section">
+  <div id="contents">
     <h2 class="title"><%= title %></h2>
     <div class="detailPage">
       <h3 class="detailTitle"><%= data.title %></h3>
@@ -10,10 +10,18 @@
       <div class="desc"><%- data.desc %></div>
       <div class="detailImg"><img src="<%= data.image %>" alt="" /></div>
     </div>
+    <% if(userInfo) { %>
     <div class="btns">
       <a href="/">메인페이지</a>
+      <a href="/list">목록</a>
       <a href="/delete">삭제</a>
     </div>
+    <% } else { %>
+    <div class="btns">
+      <a href="/">메인페이지</a>
+      <a href="/list">목록</a>
+    </div>
+    <%}%>
   </div>
 </main>
 

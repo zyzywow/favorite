@@ -35,7 +35,8 @@ passport.use(
         if (err) {
           return done(err);
         }
-        if (!result) return done(null, false, { message: "존재하지 않는 아이디 입니다." });
+        if (!result)
+          return done(null, false, { message: "존재하지 않는 아이디 입니다." });
         if (result) {
           if (password === result.userPW) {
             console.log("로그인 성공");
@@ -64,12 +65,16 @@ const MongoClient = require("mongodb").MongoClient;
 const htmlParser = require("node-html-parser");
 
 let db = null;
-MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, client) => {
-  if (err) {
-    console.log(err);
+MongoClient.connect(
+  process.env.MONGO_URL,
+  { useUnifiedTopology: true },
+  (err, client) => {
+    if (err) {
+      console.log(err);
+    }
+    db = client.db("crudapp");
   }
-  db = client.db("crudapp");
-});
+);
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // post에서 보낸 데이터 req.body로 받을려면 있어야함
@@ -98,7 +103,10 @@ const storage = multer.diskStorage({
 const fileUpload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
-  res.render("index", { title: "loellem emememem roor", userInfo: req.user });
+  res.render("index", {
+    // title: "WELCOME TO CITY POP WORLD.",
+    userInfo: req.user,
+  });
 });
 // app.get("/login", (req, res) => {
 //   res.render("login", { title: "login" });
@@ -113,24 +121,29 @@ app.post(
 app.post("/loginCheck", (req, res) => {
   const userID = req.body.userID;
   const userPW = req.body.userPW;
-  db.collection("member").findOne({ userID: userID, userPW: userPW }, (err, result) => {
-    console.log(result);
-    if (result === null) {
-      res.json({ isOk: true });
-    } else {
-      res.json({ isOk: false });
+  db.collection("member").findOne(
+    { userID: userID, userPW: userPW },
+    (err, result) => {
+      console.log(result);
+      if (result === null) {
+        res.json({ isOk: true });
+      } else {
+        res.json({ isOk: false });
+      }
     }
-  });
+  );
 });
 app.get("/logout", (req, res) => {
   if (req.user) {
     req.session.destroy();
     // res.redirect("/");
-    res.send(`<script>alert("로그아웃되었습니다.");location.href="/";</script>`);
+    res.send(
+      `<script>alert("로그아웃되었습니다.");location.href="/";</script>`
+    );
   }
 });
 app.get("/join", (req, res) => {
-  res.render("join", { title: "join" });
+  res.render("join", { title: "join", userInfo: req.user });
 });
 app.post("/idCheck", (req, res) => {
   const userID = req.body.userID;
@@ -174,10 +187,14 @@ app.post("/registerUSER", (req, res) => {
   db.collection("member").insertOne(insertData, (err, result) => {
     if (err) {
       console.log(err);
-      res.send(`<script>alert("알 수 없는 오류로 회원가입이 되지 않았습니다. 잠시 후 다시 시도해 주세요."); location.href="/"</script>`);
+      res.send(
+        `<script>alert("알 수 없는 오류로 회원가입이 되지 않았습니다. 잠시 후 다시 시도해 주세요."); location.href="/"</script>`
+      );
     }
     // res.redirect("/login");
-    res.send(`<script>alert("회원가입이 완료되었습니다."); location.href="/login"</script>`);
+    res.send(
+      `<script>alert("회원가입이 완료되었습니다."); location.href="/login"</script>`
+    );
     // res.redirect("registerSuccess");
   });
 });
@@ -217,7 +234,9 @@ app.post("/modify", (req, res) => {
         console.log(err);
       }
       // console.log(result);
-      res.send(`<script>alert("회원정보 수정이 되었습니다.");location.href="/";</script>`);
+      res.send(
+        `<script>alert("회원정보 수정이 되었습니다.");location.href="/";</script>`
+      );
     }
   );
 });
@@ -227,33 +246,44 @@ app.get("/delete", (req, res) => {
 app.post("/delete", (req, res) => {
   // console.log(req.user.userID);
   const userPW = req.body.userPW;
-  db.collection("member").deleteOne({ userID: req.user.userID, userPW: userPW }, (err, result) => {
-    // console.log(result);
-    if (result.deletedCount > 0) {
-      res.send(`<script>alert("회원탈퇴 되었습니다.");location.href="/"</script>`);
-    } else {
-      res.send(`<script>alert("비밀번호 확인해주세요.");location.href="/delete";</script>`);
+  db.collection("member").deleteOne(
+    { userID: req.user.userID, userPW: userPW },
+    (err, result) => {
+      // console.log(result);
+      if (result.deletedCount > 0) {
+        res.send(
+          `<script>alert("회원탈퇴 되었습니다.");location.href="/"</script>`
+        );
+      } else {
+        res.send(
+          `<script>alert("비밀번호 확인해주세요.");location.href="/delete";</script>`
+        );
+      }
     }
-  });
+  );
 });
 function isLogged(req, res, next) {
   if (req.user) {
     next(); // next 필수!!!! 안적으면 다음단계로들어갈수없음
   } else {
-    res.send(`<script>alert("로그인 먼저 하셔야 합니다.");location.href="/";</script>`);
+    res.send(
+      `<script>alert("로그인 먼저 하셔야 합니다.");location.href="/";</script>`
+    );
   }
 }
 
 // =====================회원관련===================
 
 app.get("/insert", isLogged, (req, res) => {
-  res.render("insert", { title: "글 쓰기", userInfo: req.user });
+  res.render("insert", { title: "insert", userInfo: req.user });
 });
 
 app.post("/register", fileUpload.single("image"), (req, res) => {
   const title = req.body.title;
   const date = req.body.date;
-  const category = Array.isArray(req.body.category) ? req.body.category.join(" ") : req.body.category;
+  const category = Array.isArray(req.body.category)
+    ? req.body.category.join(" ")
+    : req.body.category;
   const desc = req.body.desc;
   const point = req.body.point;
   const image = req.file.filename;
@@ -272,12 +302,16 @@ app.post("/register", fileUpload.single("image"), (req, res) => {
           id: count,
         },
         (err, result) => {
-          db.collection("blogCounter").updateOne({ name: "total" }, { $inc: { count: 1 } }, (err, result) => {
-            if (err) {
-              console.log(err);
+          db.collection("blogCounter").updateOne(
+            { name: "total" },
+            { $inc: { count: 1 } },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+              }
+              res.redirect("/list");
             }
-            res.redirect("/list");
-          });
+          );
         }
       );
     });
@@ -295,24 +329,36 @@ app.get("/musicList", (req, res) => {
   db.collection("blog")
     .find()
     .toArray((err, result) => {
-      res.render("musicList", { title: "musiclist", list: result, userInfo: req.user });
+      res.render("musicList", {
+        title: "musiclist",
+        list: result,
+        userInfo: req.user,
+      });
     });
 });
 app.get("/detail/:id", (req, res) => {
   const _id = parseInt(req.params.id);
   db.collection("blog").findOne({ id: _id }, (err, result) => {
     if (result) {
-      res.render("detail", { title: "detail", data: result });
+      res.render("detail", {
+        title: "detail",
+        data: result,
+        userInfo: req.user,
+      });
     } else {
       console.log("error");
     }
   });
 });
-app.post("/summerNoteInsertImg", fileUpload.single("summerNoteImg"), (req, res) => {
-  cloudinary.uploader.upload(req.file.path, (result) => {
-    res.json({ cloudinaryImgSrc: result.url });
-  });
-});
+app.post(
+  "/summerNoteInsertImg",
+  fileUpload.single("summerNoteImg"),
+  (req, res) => {
+    cloudinary.uploader.upload(req.file.path, (result) => {
+      res.json({ cloudinaryImgSrc: result.url });
+    });
+  }
+);
 
 app.listen(PORT, () => {
   console.log(`${PORT}에서 서버 대기중5`);

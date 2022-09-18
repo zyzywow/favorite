@@ -2,10 +2,11 @@
 @import "mixin";
 
 body {
-  font-family: "Roboto", "Noto Sans KR", sans-serif;
+  font-family: "Montserrat", "Noto Sans KR", sans-serif;
   font-size: $font-normal;
   color: $font-color;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(#d88c9b, 0.7)), url(../images/main-bg.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(#d88c9b, 0.7)),
+    url(../images/main-bg.jpg);
   background-size: contain;
   background-position: 50%;
   background-attachment: fixed;
@@ -17,6 +18,9 @@ a {
 }
 * {
   box-sizing: border-box;
+}
+.blind {
+  display: none;
 }
 
 #header {
@@ -65,9 +69,16 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     border-left: 2px solid #fff;
-    border-right: 2px solid #fff;
+    // background-color: rgba(#d88c9b, 0.5);
+    background-color: rgba(#f16f89, 0.5);
     cursor: pointer;
+    strong {
+      font-weight: 500;
+      font-size: 18px;
+      color: #333;
+    }
   }
   .headerList {
     width: 100%;
@@ -87,30 +98,16 @@ a {
       }
       &:hover {
         color: #fff;
-        background-color: rgba(255, 255, 255, 0.2);
+
+        background-color: rgba(#f16f89, 0.5);
       }
     }
   }
   &:hover {
     .headerList {
       display: flex;
+      border-top: none;
     }
-  }
-}
-
-#footer {
-  display: flex;
-  justify-content: center;
-  width: 300px;
-  font-weight: 500;
-  font-size: 12px;
-  background-color: #111;
-  padding: 5px 0;
-  margin: 20px auto;
-  border-radius: 20px;
-  align-items: center;
-  p {
-    margin-bottom: 0;
   }
 }
 
@@ -118,19 +115,86 @@ a {
   padding: 50px 0;
   width: 1200px;
   margin: 0 auto;
-  height: 100vh;
+  position: relative;
 
   .title {
     font-size: 36px;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     text-transform: uppercase;
     border-bottom: 1px solid #ccc;
     padding-bottom: 50px;
+    &.mainTitle {
+      letter-spacing: 1rem;
+      strong {
+        color: #f16f89;
+        font-weight: 700;
+        letter-spacing: 0.2rem;
+        font-size: 60px;
+      }
+    }
+  }
+  .insertBtn {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    a {
+      font-weight: 700;
+      font-size: 16px;
+      font-family: "Noto Sans KR";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+      width: 100px;
+      height: 50px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 4px solid #fff;
+      color: #333;
+      border-radius: 10px;
+      transition: all 0.15s ease;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+      }
+    }
+  }
+
+  #filter {
+    margin-bottom: 20px;
+    .filterList {
+      display: flex;
+      justify-content: center;
+      li {
+        border: 2px solid #eee;
+        border-radius: 5px;
+        width: 25%;
+        height: 50px;
+        font-size: 20px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #111;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.1s ease;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.5);
+          color: #fff;
+        }
+        &.on {
+          background-color: #f16f89;
+          box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
   }
   .inner {
     display: flex;
     justify-content: space-evenly;
+
     .mainBox {
       width: 500px;
       height: 500px;
@@ -138,7 +202,8 @@ a {
       border: 5px solid #fff;
       border-radius: 20px;
       position: relative;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.7);
+      color: #111;
 
       .txtBox {
         height: 100%;
@@ -147,12 +212,21 @@ a {
         justify-content: center;
         text-align: center;
         position: relative;
+        padding: 0 30px;
+        word-break: keep-all;
         h2 {
-          font-size: 20px;
+          font-size: 30px;
+          font-weight: 700;
           margin-bottom: 30px;
+          line-height: 1.3;
+          strong {
+            color: #f16f89;
+          }
         }
         p {
-          font-size: 14px;
+          line-height: 1.3;
+          font-size: 16px;
+          margin-bottom: 20px;
         }
       }
       .btnLink {
@@ -165,14 +239,13 @@ a {
         font-size: 20px;
         font-weight: 500;
         left: 50%;
-        bottom: 80px;
+        bottom: 50px;
         transform: translateX(-50%);
         border: 2px solid #fff;
         border-radius: 10px;
         transition: all 0.2s ease;
-
         &:hover {
-          bottom: 85px;
+          bottom: 55px;
           background-color: rgba(0, 0, 0, 0.5);
         }
       }
@@ -186,8 +259,21 @@ a {
       background-color: rgba(255, 255, 255, 0.7);
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      // justify-content: center;
+      align-items: center;
+      height: 500px;
+      margin: 0;
+      .loginBoxLogo {
+        width: 150px;
+        height: 150px;
+        background-image: url("../images/logo_favi.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50%;
+        margin-top: 10px;
+      }
       .inputBox {
+        width: 100%;
         label {
           display: block;
           .label {
@@ -212,9 +298,15 @@ a {
         border-radius: 10px;
         font-weight: 500;
         font-size: 16px;
+        cursor: pointer;
       }
       .loginSuccess {
         color: #111;
+        margin: 50px 0;
+        strong {
+          font-weight: 500;
+          font-size: 20px;
+        }
       }
     }
   }
@@ -253,7 +345,12 @@ a {
     }
   }
   .myPage {
-    padding-bottom: 60px;
+    padding: 60px 0;
+    width: 500px;
+    margin: 0 auto;
+    border: 5px solid #fff;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
     .infoBox {
       font-size: 18px;
       display: flex;
@@ -270,21 +367,26 @@ a {
   .blogList {
     display: flex;
     flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 50px 0;
+    border-radius: 10px;
     li {
-      width: 24%;
-      margin: 0.5%;
+      width: 25%;
+      padding: 2px;
       border: 1px solid #ccc;
-      border-radius: 10px;
+      border-radius: 5px;
       box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
       .img {
         img {
           width: 100%;
-          height: 250px;
           object-fit: cover;
         }
       }
       .txt {
         padding: 0 20px;
+        color: #111;
         .blogTitle {
           font-size: 18px;
           margin-top: 20px;
@@ -292,30 +394,36 @@ a {
         }
         .date {
           text-align: right;
-          margin-top: 20px;
+          margin: 15px 0;
           font-size: 14px;
         }
       }
     }
   }
 }
-.section {
-  margin-top: 100px;
-  background-color: #fff;
-  color: #111;
-}
+
 form {
+  // margin-top: 100px;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #111;
+  width: 600px;
+  margin: 0 auto;
+  color: #111;
+  border-radius: 20px;
+  border: 4px solid #fff;
   .inputBox {
-    padding: 30px;
+    padding: 15px 30px;
     border-bottom: 1px solid #ccc;
+
     label {
       display: flex;
       align-items: center;
       margin-bottom: 0;
       .label {
         display: flex;
-        width: 150px;
+        width: 100px;
         font-weight: 500;
+        text-transform: uppercase;
       }
       input[type="text"],
       input[type="password"],
@@ -335,10 +443,10 @@ form {
       #desc {
         flex-grow: 1;
       }
-      .note-frame {
-        width: 100%;
-      }
+
       .categoryList {
+        text-transform: uppercase;
+        font-weight: 500;
         ul {
           display: flex;
           margin-bottom: 0;
@@ -354,16 +462,21 @@ form {
     .desc {
       padding: 20px 0 0 150px;
     }
-    #btnZipCode {
+    #btnZipCode,
+    #btnIdCheck {
       padding: 10px;
-      box-sizing: border-box;
+      border: none;
+      height: 50px;
+      border-radius: 5px;
     }
     .genderBox {
+      display: flex;
       > div {
         display: flex;
+        align-items: center;
         input {
-          width: 25px;
-          height: 25px;
+          width: 20px;
+          height: 20px;
           margin: 5px 10px;
         }
       }
@@ -377,7 +490,7 @@ form {
   }
 
   .formBtns {
-    margin-top: 50px;
+    margin: 30px 0;
     display: flex;
     justify-content: center;
     button {
@@ -444,6 +557,22 @@ form {
         }
       }
     }
+  }
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  width: 300px;
+  font-weight: 500;
+  font-size: 10px;
+  background-color: #111;
+  padding: 5px 0;
+  margin: 20px auto;
+  border-radius: 20px;
+  align-items: center;
+  p {
+    margin-bottom: 0;
   }
 }
 

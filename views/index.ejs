@@ -1,20 +1,24 @@
 <%- include("include/header"); %>
 <main id="main">
   <div id="contents">
-    <h2 class="title"><%= title %></h2>
+    <h2 class="title mainTitle">WELCOME TO <strong>CITY POP</strong> WORLD :)</h2>
     <div class="inner">
       <div class="mainBox">
         <div class="txtBox">
-          <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
-          <p>fugit exercitationem iste reprehenderit? Odio esse, adipisci consectetur perspiciatis est facilis incidunt.</p>
+          <h2><strong>시티팝</strong>의 세계로 오신 여러분들 환영합니다.</h2>
+          <p>* 이 곳에선 무료로 시티팝과 관련된 <br/>다양한 사진과 음악을 구경하실 수 있습니다.</p>
+          <p>* 회원가입 후 다양한 시티팝의 정보를 게시판에 올려주세요.</p>
+          <p>* 많은 분들과 정보를 공유하면서<br/> 다양한 시티팝의 매력에 빠져 보세요.</p>
         </div>
         <a href="/list" class="btnLink">더 많은 자료 보러가기</a>
       </div>
       <% if(userInfo) { %>
 
-      <div id="loginBox">
+      <form id="loginBox">
+        <div class="loginBoxLogo">
+        </div>
         <div class="loginSuccess">
-          <span><%= userInfo.userName %> 님 반갑습니다.</span>
+          <span><strong><%= userInfo.userName %></strong> 님 반갑습니다.</span>
         </div>
         <div class="btns">
           <a href="/mypage">마이페이지</a>
@@ -23,7 +27,10 @@
       </div>
 
       <% } else { %>
+        
       <form action="/login" method="POST" id="loginBox">
+        <div class="loginBoxLogo">
+        </div>
         <div class="inputBox">
           <label>
             <span class="label">ID</span>
