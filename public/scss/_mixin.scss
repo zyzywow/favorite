@@ -6,7 +6,7 @@
 
 @mixin multiEllipsis($line: 3, $lineHeight: 1.5) {
   line-height: $lineHeight;
-  height: ($lineHeight * 1 * $line);
+  height: ($lineHeight * 1em * $line);
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: $line;

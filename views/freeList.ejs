@@ -1,0 +1,180 @@
+<%- include("include/header");%>
+
+<main id="main">
+  <div id="contents">
+    <h2 class="title"><%= title %></h2>
+    <ul class="musicList">
+      <div class="subContents">
+        <!-- <h3 class="contentsTitle">견적문의</h3> -->
+        <div class="contents" id="estimate">
+          <div class="container">
+            <div class="board">
+              <div class="table list">
+                <div class="thead">
+                  <span scope="column" class="column" style="width: 5%">번호</span>
+                  <span scope="column" class="column">제목</span>
+                  <span scope="column" class="column" style="width: 15%">작성자</span>
+                  <span scope="column" class="column" style="width: 15%">날짜</span>
+                </div>
+                <ul class="tbody">
+                  <li class="row">
+                    <span class="no column">14</span>
+                    <span class="title column">
+                      <a href="/freeDetail">제목이 들어갑니다. 가나다마가나다마가나다마가나다마</a>
+                    </span>
+                    <span class="writer column" data-label="작성자">관리자</span>
+                    <span class="date column" data-label="날짜">2022-06-22</span>
+                  </li>
+                  <li class="row">
+                    <span class="no column">14</span>
+                    <span class="title column">
+                      <a href="">제목이 들어갑니다.</a>
+                    </span>
+                    <span class="writer column" data-label="작성자">관리자</span>
+                    <span class="date column" data-label="날짜">2022-06-22</span>
+                  </li>
+                  <li class="row">
+                    <span class="no column">14</span>
+                    <span class="title column">
+                      <a href="">제목이 들어갑니다.</a>
+                    </span>
+                    <span class="writer column" data-label="작성자">관리자</span>
+                    <span class="date column" data-label="날짜">2022-06-22</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- <table class="boardTable">
+              <colgroup>
+              <col style="width: 5%" />
+              <col />
+              <col style="width: 15%" />
+              <col style="width: 15%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="column">번호</th>
+                  <th scope="column">제목</th>
+                  <th scope="column">작성자</th>
+                  <th scope="column">날짜</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="subject">제목이 들어갑니다.</td>
+                  <td>관리자</td>
+                  <td>2022.05.18</td>
+                </tr>
+              </tbody>
+            </table> -->
+            <%- include("include/pagination");%> <%- include("include/search");%>
+          </div>
+        </div>
+      </div>
+    </ul>
+    <% if(userInfo) { %>
+    <div class="btns">
+      <a href="/">메인페이지</a>
+      <a href="/freeInsert">글쓰기</a>
+    </div>
+    <% } else { %>
+    <div class="btns">
+      <a href="/">메인페이지</a>
+    </div>
+    <%}%>
+  </div>
+</main>
+<script>
+  // const randomData = ["citypop", "시티팝", "일본시티팝", "한국시티팝"];
+  // function randomValueFromArray(array) {
+  //   const random = Math.floor(Math.random() * array.length);
+  //   return array[random];
+  // }
+  // let randomSearch = randomValueFromArray(randomData);
+
+  // let apikey = "AIzaSyDjHlSZzZHZzJghpeo4Kxv0waYgZ2Nv640";
+
+  // // let keyword = "citypop";
+  // let keyword = randomSearch;
+  // console.log(randomSearch);
+  // const musicList = $("#contents .musicList");
+  // $.ajax({
+  //   url: "https://www.googleapis.com/youtube/v3/search",
+  //   type: "get",
+  //   dataType: "json",
+  //   data: { part: "snippet", key: apikey, q: keyword, maxResults: 100, type: "video", videoEmbeddable: "true" },
+  // }).done(function (response) {
+  //   console.log(response);
+  //   const youtubeList = response.items;
+  //   let tempHtml = "";
+  //   $.each(youtubeList, function (idx, item) {
+  //     thumbnail = item.snippet.thumbnails.medium.url;
+  //     videoId = item.id.videoId;
+  //     tempHtml += `<li class="musicItem">
+  //         <a href="https://www.youtube.com/watch?v=${videoId}">
+  //           <div class="img"><img src="${thumbnail}" alt="thumbnail"/></div>
+  //             <span class="musicTitle">${item.snippet.title}</span>
+  //         </a>
+
+  //       </li>`;
+  //   });
+  //   musicList.html(tempHtml);
+  // });
+</script>
+<%- include("include/footer");%>

@@ -35,8 +35,7 @@ passport.use(
         if (err) {
           return done(err);
         }
-        if (!result)
-          return done(null, false, { message: "존재하지 않는 아이디 입니다." });
+        if (!result) return done(null, false, { message: "존재하지 않는 아이디 입니다." });
         if (result) {
           if (password === result.userPW) {
             console.log("로그인 성공");
@@ -65,16 +64,12 @@ const MongoClient = require("mongodb").MongoClient;
 const htmlParser = require("node-html-parser");
 
 let db = null;
-MongoClient.connect(
-  process.env.MONGO_URL,
-  { useUnifiedTopology: true },
-  (err, client) => {
-    if (err) {
-      console.log(err);
-    }
-    db = client.db("crudapp");
+MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, client) => {
+  if (err) {
+    console.log(err);
   }
-);
+  db = client.db("crudapp");
+});
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // post에서 보낸 데이터 req.body로 받을려면 있어야함
@@ -121,25 +116,20 @@ app.post(
 app.post("/loginCheck", (req, res) => {
   const userID = req.body.userID;
   const userPW = req.body.userPW;
-  db.collection("member").findOne(
-    { userID: userID, userPW: userPW },
-    (err, result) => {
-      console.log(result);
-      if (result === null) {
-        res.json({ isOk: true });
-      } else {
-        res.json({ isOk: false });
-      }
+  db.collection("member").findOne({ userID: userID, userPW: userPW }, (err, result) => {
+    console.log(result);
+    if (result === null) {
+      res.json({ isOk: true });
+    } else {
+      res.json({ isOk: false });
     }
-  );
+  });
 });
 app.get("/logout", (req, res) => {
   if (req.user) {
     req.session.destroy();
     // res.redirect("/");
-    res.send(
-      `<script>alert("로그아웃되었습니다.");location.href="/";</script>`
-    );
+    res.send(`<script>alert("로그아웃되었습니다.");location.href="/";</script>`);
   }
 });
 app.get("/join", (req, res) => {
@@ -187,14 +177,10 @@ app.post("/registerUSER", (req, res) => {
   db.collection("member").insertOne(insertData, (err, result) => {
     if (err) {
       console.log(err);
-      res.send(
-        `<script>alert("알 수 없는 오류로 회원가입이 되지 않았습니다. 잠시 후 다시 시도해 주세요."); location.href="/"</script>`
-      );
+      res.send(`<script>alert("알 수 없는 오류로 회원가입이 되지 않았습니다. 잠시 후 다시 시도해 주세요."); location.href="/"</script>`);
     }
     // res.redirect("/login");
-    res.send(
-      `<script>alert("회원가입이 완료되었습니다."); location.href="/login"</script>`
-    );
+    res.send(`<script>alert("회원가입이 완료되었습니다."); location.href="/login"</script>`);
     // res.redirect("registerSuccess");
   });
 });
@@ -234,9 +220,7 @@ app.post("/modify", (req, res) => {
         console.log(err);
       }
       // console.log(result);
-      res.send(
-        `<script>alert("회원정보 수정이 되었습니다.");location.href="/";</script>`
-      );
+      res.send(`<script>alert("회원정보 수정이 되었습니다.");location.href="/";</script>`);
     }
   );
 });
@@ -246,29 +230,20 @@ app.get("/delete", (req, res) => {
 app.post("/delete", (req, res) => {
   // console.log(req.user.userID);
   const userPW = req.body.userPW;
-  db.collection("member").deleteOne(
-    { userID: req.user.userID, userPW: userPW },
-    (err, result) => {
-      // console.log(result);
-      if (result.deletedCount > 0) {
-        res.send(
-          `<script>alert("회원탈퇴 되었습니다.");location.href="/"</script>`
-        );
-      } else {
-        res.send(
-          `<script>alert("비밀번호 확인해주세요.");location.href="/delete";</script>`
-        );
-      }
+  db.collection("member").deleteOne({ userID: req.user.userID, userPW: userPW }, (err, result) => {
+    // console.log(result);
+    if (result.deletedCount > 0) {
+      res.send(`<script>alert("회원탈퇴 되었습니다.");location.href="/"</script>`);
+    } else {
+      res.send(`<script>alert("비밀번호 확인해주세요.");location.href="/delete";</script>`);
     }
-  );
+  });
 });
 function isLogged(req, res, next) {
   if (req.user) {
     next(); // next 필수!!!! 안적으면 다음단계로들어갈수없음
   } else {
-    res.send(
-      `<script>alert("로그인 먼저 하셔야 합니다.");location.href="/";</script>`
-    );
+    res.send(`<script>alert("로그인 먼저 하셔야 합니다.");location.href="/";</script>`);
   }
 }
 
@@ -277,13 +252,13 @@ function isLogged(req, res, next) {
 app.get("/insert", isLogged, (req, res) => {
   res.render("insert", { title: "insert", userInfo: req.user });
 });
-
+app.get("/freeInsert", isLogged, (req, res) => {
+  res.render("freeInsert", { title: "insert", userInfo: req.user });
+});
 app.post("/register", fileUpload.single("image"), (req, res) => {
   const title = req.body.title;
   const date = req.body.date;
-  const category = Array.isArray(req.body.category)
-    ? req.body.category.join(" ")
-    : req.body.category;
+  const category = Array.isArray(req.body.category) ? req.body.category.join(" ") : req.body.category;
   const desc = req.body.desc;
   const point = req.body.point;
   const image = req.file.filename;
@@ -302,16 +277,12 @@ app.post("/register", fileUpload.single("image"), (req, res) => {
           id: count,
         },
         (err, result) => {
-          db.collection("blogCounter").updateOne(
-            { name: "total" },
-            { $inc: { count: 1 } },
-            (err, result) => {
-              if (err) {
-                console.log(err);
-              }
-              res.redirect("/list");
+          db.collection("blogCounter").updateOne({ name: "total" }, { $inc: { count: 1 } }, (err, result) => {
+            if (err) {
+              console.log(err);
             }
-          );
+            res.redirect("/list");
+          });
         }
       );
     });
@@ -322,7 +293,7 @@ app.get("/list", (req, res) => {
   db.collection("blog")
     .find()
     .toArray((err, result) => {
-      res.render("list", { title: "list", list: result, userInfo: req.user });
+      res.render("list", { title: "이미지 게시판", list: result, userInfo: req.user });
     });
 });
 app.get("/musicList", (req, res) => {
@@ -330,12 +301,55 @@ app.get("/musicList", (req, res) => {
     .find()
     .toArray((err, result) => {
       res.render("musicList", {
-        title: "musiclist",
+        title: "랜덤음악 게시판",
         list: result,
         userInfo: req.user,
       });
     });
 });
+app.get("/freeList", (req, res) => {
+  db.collection("blog")
+    .find()
+    .toArray((err, result) => {
+      res.render("freeList", {
+        title: "자유 게시판",
+        list: result,
+        userInfo: req.user,
+      });
+    });
+});
+app.get("/freeDetail", (req, res) => {
+  res.render("freeDetail", { title: "freeDetail" });
+});
+app.post("/registerFree", (req, res) => {
+  const title = req.body.title;
+  const date = req.body.date;
+  const category = Array.isArray(req.body.category) ? req.body.category.join(" ") : req.body.category;
+  const desc = req.body.desc;
+
+  // console.log(db.collection("blog"));
+  db.collection("blogCounter").findOne({ name: "total" }, (err, result01) => {
+    const count = result01.count;
+    db.collection("blogFreeInsert").insertOne(
+      {
+        title: title,
+        date: date,
+        category: category,
+        desc: desc,
+        id: count,
+      },
+      (err, result) => {
+        db.collection("blogFreeCounter").updateOne({ name: "total" }, { $inc: { count: 1 } }, (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          res.redirect("/freeList");
+        });
+      }
+    );
+  });
+});
+
 app.get("/detail/:id", (req, res) => {
   const _id = parseInt(req.params.id);
   db.collection("blog").findOne({ id: _id }, (err, result) => {
@@ -350,15 +364,11 @@ app.get("/detail/:id", (req, res) => {
     }
   });
 });
-app.post(
-  "/summerNoteInsertImg",
-  fileUpload.single("summerNoteImg"),
-  (req, res) => {
-    cloudinary.uploader.upload(req.file.path, (result) => {
-      res.json({ cloudinaryImgSrc: result.url });
-    });
-  }
-);
+// app.post("/summerNoteInsertImg", fileUpload.single("summerNoteImg"), (req, res) => {
+//   cloudinary.uploader.upload(req.file.path, (result) => {
+//     res.json({ cloudinaryImgSrc: result.url });
+//   });
+// });
 
 app.listen(PORT, () => {
   console.log(`${PORT}에서 서버 대기중5`);
