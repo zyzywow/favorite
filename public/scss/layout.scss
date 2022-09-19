@@ -5,7 +5,8 @@ body {
   font-family: "Montserrat", "Noto Sans KR", sans-serif;
   font-size: $font-normal;
   color: $font-color;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(#d88c9b, 0.7)), url(../images/main-bg.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(#d88c9b, 0.7)),
+    url(../images/main-bg.jpg);
   background-size: contain;
   background-position: 50%;
   background-attachment: fixed;
@@ -116,7 +117,7 @@ a {
   padding: 50px 0;
   width: 1200px;
   margin: 0 auto;
-  // position: relative;
+  position: relative;
 
   .title {
     font-size: 36px;
@@ -138,8 +139,10 @@ a {
   }
   .insertBtn {
     position: absolute;
-    top: 18%;
-    right: 18%;
+    // top: 18%;
+    // right: 18%;
+    top: 50px;
+    right: 0;
     a {
       font-weight: 700;
       font-size: 16px;
@@ -452,11 +455,12 @@ a {
         }
       }
       .detailVideo {
-        position: absolute;
+        // position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
         background-color: rgba(0, 0, 0, 0.8);
         justify-content: center;
         align-items: center;
@@ -473,7 +477,7 @@ a {
         }
         .video {
           position: absolute;
-          width: 50%;
+          width: 70%;
           height: 50%;
         }
       }

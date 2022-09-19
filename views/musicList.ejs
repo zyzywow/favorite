@@ -11,16 +11,6 @@
     </ul>
 
     <!-- <iframe src="http://www.youtube.com/embed/fXjdkWP2kaM" frameborder="0"></iframe> -->
-    <% if(userInfo) { %>
-    <div class="btns">
-      <a href="/">메인페이지</a>
-      <a href="/insert">글쓰기</a>
-    </div>
-    <% } else { %>
-    <div class="btns">
-      <a href="/">메인페이지</a>
-    </div>
-    <%}%>
   </div>
 </main>
 <script>
@@ -31,7 +21,13 @@
   let randomNum = Math.floor(Math.random() * (16 - 1) + 1);
   // ===============랜덤페이지=============
 
-  const randomData = ["citypop", "시티팝", "일본시티팝", "한국시티팝"];
+  const randomData = [
+    "citypop",
+    "시티팝",
+    "일본 시티팝",
+    "한국 시티팝",
+    "japanese citypop",
+  ];
   function randomValueFromArray(array) {
     const random = Math.floor(Math.random() * array.length);
     return array[random];
@@ -39,9 +35,10 @@
   let randomSearch = randomValueFromArray(randomData);
   // ===============랜덤검색어=============
 
-  // $(".musicList").on("click", ".musicItem", function () {
-  //   $(this).addClass("open").siblings().removeClass("open");
-  // });
+  $(".musicList").on("click", ".musicItem", function () {
+    // $(this).addClass("open").siblings().removeClass("open");
+    $(this).toggleClass("open");
+  });
 
   // 이벤트위임===================
   //----------------------youtube 검색결과
@@ -85,6 +82,8 @@
   }).done(function (response) {
     // console.log(response);
     // console.log(response.documents);
+    console.log(randomSearch);
+    console.log(randomNum);
     const searchItem = response.documents;
     let tempHtml = "";
     $.each(searchItem, function (idx, item) {
@@ -102,7 +101,7 @@
       const itemUrl = item.url;
       const itemUrl02 = itemUrl.replace("http://www.youtube.com/watch?v=", "");
 
-      tempHtml += `<li class="musicItem">
+      tempHtml += `<li class="musicItem" >
           <a href=""  >
             <div class="img"><img src="${item.thumbnail}" alt="thumbnail"/>
               <p class="playTime">${dateHours}:${dateMins}:${dateSeconds}</p></div>
@@ -120,9 +119,17 @@
         `;
     });
     musicList.html(tempHtml);
-    $(".musicItem").on("click", function () {
-      $(this).addClass("open").siblings().removeClass("open");
-    });
+    // $(".musicItem").on("click", function () {
+    //   // $(this).addClass("open").siblings().removeClass("open");
+    //   $(this).toggleClass("open");
+    //   // $(".detailVideo").show();
+
+    //   // $(".detailVideo").hide();
+    // });
+    // $(".detailVideo .close").on("click", function () {
+    //   // console.log("kowkwokwokwo");
+    //   $(".video").stop();
+    // });
   });
 </script>
 
