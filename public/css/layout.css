@@ -365,7 +365,8 @@ a {
 }
 #contents .blogList li .img img {
   width: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 #contents .blogList li .txt {
   padding: 0 20px;
@@ -409,7 +410,8 @@ a {
 #contents .musicList .musicItem .img img {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 #contents .musicList .musicItem .img .playTime {
   position: absolute;
@@ -457,7 +459,7 @@ a {
   width: 70%;
   height: 50%;
 }
-#contents .musicList .musicItem.open .detailVideo {
+#contents .musicList .musicItem .detailVideo.open {
   display: flex;
 }
 
@@ -570,7 +572,10 @@ form .inputBox .file {
   flex-grow: 1;
   color: #111;
   box-sizing: border-box;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 form .inputBox #userJob {
   width: 200px;

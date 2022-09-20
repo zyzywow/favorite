@@ -5,7 +5,8 @@ body {
   font-family: "Montserrat", "Noto Sans KR", sans-serif;
   font-size: $font-normal;
   // color: $font-color;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(#d88c9b, 0.7)), url(../images/main-bg.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(#d88c9b, 0.7)),
+    url(../images/main-bg.jpg);
   background-size: contain;
   background-position: 50%;
   background-attachment: fixed;
@@ -470,6 +471,9 @@ a {
           width: 70%;
           height: 50%;
         }
+        &.open {
+          display: flex;
+        }
       }
       // .close {
       //   position: absolute;
@@ -480,11 +484,6 @@ a {
       //     font-size: 70px;
       //   }
       // }
-      &.open {
-        .detailVideo {
-          display: flex;
-        }
-      }
     }
   }
 }

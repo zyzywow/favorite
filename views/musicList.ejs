@@ -4,7 +4,9 @@
   <div id="contents">
     <h2 class="title"><%= title %></h2>
     <div class="insertBtn randomBtn">
-      <a href="/musicList"><span class="material-icons"> shuffle </span>RANDOM</a>
+      <a href="/musicList"
+        ><span class="material-icons"> shuffle </span>RANDOM</a
+      >
     </div>
     <!-- <div class="close"><span class="material-icons"> cancel </span></div> -->
     <ul class="musicList">
@@ -30,25 +32,27 @@
   let randomSearch = randomValueFromArray(randomData);
   // ===============랜덤검색어=============
 
-  $(".musicList").on("click", ".musicItem", function () {
-    $(this).toggleClass("open");
-    console.log($(this));
-    // $(this).addClass("open").siblings().removeClass("open");
-    // $(this).toggleClass("open");
-    // if ($(this).hasClass("open")) {
-    //   $(this).on("click", function () {
-    //     $(this).removeClass("open");
-    //     // console.log($(this).parents());
-    //   });
-    // }
+  // $(".musicList").on("click", ".musicItem", function () {
+  //   // $(this).toggleClass("open");
+  //   $(this).addClass("open");
 
-    // $(this).on("click", function () {
-    //   if ($(this).hasClass("open")) {
-    //     $(this).parents(".musicItem").removeClass("open");
-    //     console.log($(this).parents(".musicItem"));
-    //   }
-    // });
-  });
+  //   //   // $(this).addClass("open").siblings().removeClass("open");
+  //   //   // $(this).toggleClass("open");
+  //   //   // if ($(this).hasClass("open")) {
+  //   //   //   $(this).on("click", function () {
+  //   //   //     $(this).removeClass("open");
+  //   //   //     // console.log($(this).parents());
+  //   //   //   });
+  //   //   // }
+
+  //   $(".detailVideo").on("click", function () {
+  //     if ($(this).parent().hasClass("open")) {
+  //       // $(this).parent().removeClass("open");
+  //       // $(this).parent().removeClass({ className: "open" });
+  //       console.log($(this).parent());
+  //     }
+  //   });
+  // });
 
   // 이벤트위임===================
   //----------------------youtube 검색결과
@@ -112,7 +116,7 @@
       const itemUrl02 = itemUrl.replace("http://www.youtube.com/watch?v=", "");
 
       tempHtml += `<li class="musicItem">
-          <a href=""  >
+          <a href="">
             <div class="img"><img src=" https://img.youtube.com/vi/${itemUrl02}/mqdefault.jpg" alt="thumbnail"/>
               <p class="playTime">${dateHours}:${dateMins}:${dateSeconds}</p></div>
               <div class="txtBox">
@@ -121,26 +125,33 @@
                 </div>
           </a>
           <div class="detailVideo" >
-              <iframe class="video" src="http://www.youtube.com/embed/${itemUrl02}?enablejsapi=1&version=3&playerapiid=ytplayer" frameborder="0"></iframe></div>
+                  <iframe class="video" src="http://www.youtube.com/embed/${itemUrl02}?enablejsapi=1&version=3&playerapiid=ytplayer" frameborder="0"></iframe>
+           </div>
+
         </li>
+       
         `;
     });
     musicList.html(tempHtml);
+    $(".musicItem").on("click", function () {
+      const currentVideoBox = $(this).children(".detailVideo");
+      currentVideoBox.toggleClass("open");
+      const currentVideo = currentVideoBox.children(".video");
+      // $(this).children(".detailVideo").toggleClass("open");
+      console.log(this);
+      currentVideo.append(currentVideo);
 
-    // $("#musicItem").on("click", function () {
-    //   // $(this).addClass("open").siblings().removeClass("open");
-    //   $(this).toggleClass("open");
-    // });
+      // $(".detailVideo").append(
+      //   `<iframe class="video" src="http://www.youtube.com/embed/7GXbDSa9Llc?enablejsapi=1&version=3&playerapiid=ytplayer" frameborder="0"></iframe>`
+      // );
 
-    // $(".musicItem .detailVideo").on("click", function () {
-    //   // $(this).addClass("open").siblings().removeClass("open");
-    //   console.log("wowowowowowowo");
-    //   $(".musicItem").removeClass("open");
-    // });
-    // $(".detailVideo").on("click", function () {
-    //   // console.log("kowkwokwokwo");
-
-    // });
+      // this 해당동영상 값만넣으면됨.
+      if (!$(".detailVideo").hasClass("open")) {
+        console.log("wowowowowowowowowo");
+        $(".detailVideo").empty();
+      }
+      return false;
+    });
   });
 </script>
 
