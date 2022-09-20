@@ -3,52 +3,33 @@
 <main id="main">
   <div id="contents">
     <h2 class="title"><%= title %></h2>
-    <ul class="musicList">
-      <div class="subContents">
-        <h3 class="contentsTitle">견적문의</h3>
-        <div class="contents" id="">
-          <div class="container">
-            <div class="board">
-              <div class="table view">
-                <div class="thead">
-                  <p class="title">제목이 들어갑니다. 가나다마가나다마가나다마가나다마</p>
-                  <dl>
-                    <dt>작성자</dt>
-                    <dd>관리자</dd>
-                    <dt>등록일</dt>
-                    <dd>2022-06-22</dd>
-                  </dl>
-                </div>
-                <div class="tbody">
-                  <div class="contents">
-                    내용이 들어갑니다. <br />
-                    내용이 들어갑니다. <br />
-                    내용이 들어갑니다. <br />
-                    내용이 들어갑니다. <br />
-                    내용이 들어갑니다. <br />
-                    내용이 들어갑니다. <br />
-                  </div>
-                </div>
-              </div>
-              <div class="btns right">
-                <a href="javascript:history.back()" class="btn confirm">확인</a>
-                <a href="javascript:history.back()" class="btn cancel">취소</a>
-              </div>
+
+    <div class="subContents">
+      <div class="container">
+        <div class="board">
+          <div class="table view">
+            <div class="thead">
+              <p class="boardTitle"><%= data.title %></p>
+              <dl>
+                <dt>작성자</dt>
+                <dd><%= data.userName %></dd>
+                <dt>등록일</dt>
+                <dd><%= data.date %></dd>
+              </dl>
             </div>
+            <div class="tbody">
+              <div class="contents"><%= data.desc %></div>
+            </div>
+          </div>
+          <div class="btns">
+            <!-- <a href="javascript:history.back()" class="btn confirm">확인</a>
+            <a href="javascript:history.back()" class="btn cancel">뒤로가기</a> -->
+            <a href="/" class="btn confirm">메인페이지</a>
+            <a href="javascript:history.back()" class="btn cancel">뒤로가기</a>
           </div>
         </div>
       </div>
-    </ul>
-    <% if(userInfo) { %>
-    <div class="btns">
-      <a href="/">메인페이지</a>
-      <a href="/freeInsert">글쓰기</a>
     </div>
-    <% } else { %>
-    <div class="btns">
-      <a href="/">메인페이지</a>
-    </div>
-    <%}%>
   </div>
 </main>
 <script>

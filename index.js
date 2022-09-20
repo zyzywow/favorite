@@ -17,6 +17,7 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 }, // milli second로 시간 설정
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -60,8 +61,8 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-const MongoClient = require("mongodb").MongoClient;
 const htmlParser = require("node-html-parser");
+const MongoClient = require("mongodb").MongoClient;
 
 let db = null;
 MongoClient.connect(process.env.MONGO_URL, { useUnifiedTopology: true }, (err, client) => {
@@ -253,15 +254,20 @@ app.get("/insert", isLogged, (req, res) => {
   res.render("insert", { title: "insert", userInfo: req.user });
 });
 app.get("/freeInsert", isLogged, (req, res) => {
-  res.render("freeInsert", { title: "insert", userInfo: req.user });
+  res.render("freeInsert", { title: "freeinsert", userInfo: req.user });
 });
 app.post("/register", fileUpload.single("image"), (req, res) => {
   const title = req.body.title;
-  const date = req.body.date;
   const category = Array.isArray(req.body.category) ? req.body.category.join(" ") : req.body.category;
+  const userName = req.user.userName;
   const desc = req.body.desc;
   const point = req.body.point;
   const image = req.file.filename;
+
+  const date = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
+  const time = new Date().toTimeString().split(" ")[0];
+  const dateNow = date + " " + time;
+
   cloudinary.uploader.upload(req.file.path, (result) => {
     // console.log(db.collection("blog"));
     db.collection("blogCounter").findOne({ name: "total" }, (err, result01) => {
@@ -269,10 +275,11 @@ app.post("/register", fileUpload.single("image"), (req, res) => {
       db.collection("blog").insertOne(
         {
           title: title,
-          date: date,
+          date: dateNow,
           category: category,
           desc: desc,
-          point: point,
+          userName: userName,
+          // point: point,
           image: result.url,
           id: count,
         },
@@ -292,6 +299,7 @@ app.post("/register", fileUpload.single("image"), (req, res) => {
 app.get("/list", (req, res) => {
   db.collection("blog")
     .find()
+    .sort({ id: -1 })
     .toArray((err, result) => {
       res.render("list", { title: "이미지 게시판", list: result, userInfo: req.user });
     });
@@ -308,33 +316,47 @@ app.get("/musicList", (req, res) => {
     });
 });
 app.get("/freeList", (req, res) => {
-  db.collection("blog")
+  db.collection("blogFreeInsert")
     .find()
+    .sort({ id: -1 })
+    .limit(10)
     .toArray((err, result) => {
+      console.log(result);
+
       res.render("freeList", {
         title: "자유 게시판",
         list: result,
+
         userInfo: req.user,
       });
     });
 });
-app.get("/freeDetail", (req, res) => {
-  res.render("freeDetail", { title: "freeDetail" });
+app.get("/freeDetail/:id", (req, res) => {
+  const _id = parseInt(req.params.id);
+  db.collection("blogFreeInsert").findOne({ id: _id }, (err, result) => {
+    if (result) {
+      res.render("freeDetail", { title: "freeDetail", data: result, userInfo: req.user });
+    } else {
+      console.log("error");
+    }
+  });
 });
+
 app.post("/registerFree", (req, res) => {
+  const date = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
+  const time = new Date().toTimeString().split(" ")[0];
+  const dateNow = date + " " + time;
+  const userName = req.user.userName;
   const title = req.body.title;
-  const date = req.body.date;
-  const category = Array.isArray(req.body.category) ? req.body.category.join(" ") : req.body.category;
   const desc = req.body.desc;
 
-  // console.log(db.collection("blog"));
-  db.collection("blogCounter").findOne({ name: "total" }, (err, result01) => {
+  db.collection("blogFreeCounter").findOne({ name: "total" }, (err, result01) => {
     const count = result01.count;
     db.collection("blogFreeInsert").insertOne(
       {
         title: title,
-        date: date,
-        category: category,
+        userName: userName,
+        date: dateNow,
         desc: desc,
         id: count,
       },

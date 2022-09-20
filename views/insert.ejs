@@ -3,63 +3,28 @@
 <main id="main">
   <div id="contents" class="section">
     <h2 class="title"><%= title %></h2>
-    <form
-      action="/register"
-      method="POST"
-      id="insert"
-      class="formBox"
-      enctype="multipart/form-data"
-    >
+    <form action="/register" method="POST" id="insert" class="formBox" enctype="multipart/form-data">
       <!-- enctype="multipart/form-data" - 첨부file전송할때필수!! -->
       <div class="inputBox">
         <label>
           <span class="label">제목</span>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            placeholder="제목을 입력하세요."
-          />
+          <input type="text" id="title" name="title" placeholder="제목을 입력하세요." maxlength="25" />
         </label>
       </div>
-      <div class="inputBox">
+      <!-- <div class="inputBox">
         <label>
           <span class="label">날짜</span>
           <input type="text" id="date" name="date" placeholder="날짜" />
         </label>
-      </div>
+      </div> -->
       <div class="inputBox">
         <label>
           <span class="label">카테고리</span>
           <div class="categoryList">
             <ul>
-              <li>
-                <span>illustration</span
-                ><input
-                  type="radio"
-                  value="illustration"
-                  name="category"
-                  id="category"
-                />
-              </li>
-              <li>
-                <span>animetion</span
-                ><input
-                  type="radio"
-                  value="animetion"
-                  name="category"
-                  id="category"
-                />
-              </li>
-              <li>
-                <span>photo</span
-                ><input
-                  type="radio"
-                  value="photo"
-                  name="category"
-                  id="category"
-                />
-              </li>
+              <li><span>illustration</span><input type="radio" value="illustration" name="category" id="category" /></li>
+              <li><span>animetion</span><input type="radio" value="animetion" name="category" id="category" /></li>
+              <li><span>photo</span><input type="radio" value="photo" name="category" id="category" /></li>
             </ul>
           </div>
         </label>
@@ -67,7 +32,7 @@
       <div class="inputBox">
         <label>
           <span class="label">내용</span>
-          <textarea name="desc" id="desc" cols="30" rows="10"></textarea>
+          <textarea name="desc" id="desc" cols="30" rows="10" maxlength="300"></textarea>
         </label>
       </div>
       <!-- <div class="inputBox">
@@ -84,9 +49,11 @@
         </label>
       </div> -->
       <div class="inputBox">
-        <label>
-          <span class="label">대표이미지</span>
+        <label class="fileArea">
+          <span class="label">이미지 파일</span>
           <input type="file" name="image" id="image" />
+          <input type="text" class="file" placeholder="첨부파일" readonly />
+          <span class="fileSearch">이미지 파일<span class="material-icons"> search </span></span>
         </label>
       </div>
       <div class="formBtns">
@@ -98,8 +65,8 @@
 </main>
 
 <script>
-  const date = document.querySelector("#date");
-  const picker = new Lightpick({ field: date, format: "YYYY/MM/DD hh:mm" });
+  // const date = document.querySelector("#date");
+  // const picker = new Lightpick({ field: date, format: "YYYY/MM/DD hh:mm" });
 
   $("#btnJoin").on("click", function () {
     if ($("#insert input").val() === "") {
@@ -111,7 +78,14 @@
       return false;
     }
   });
-
+  // ===============================파일업로드===========
+  const file = document.querySelector(".fileArea input[type='file']");
+  const fakeFileTxt = document.querySelector(".fileArea .file");
+  file.addEventListener("change", function () {
+    const fileName = file.value;
+    fakeFileTxt.value = fileName;
+    console.log(fileName);
+  });
   // $("#desc").summernote({
   //   placeholder: "내용을 입력해주세요.",
   //   height: 300,

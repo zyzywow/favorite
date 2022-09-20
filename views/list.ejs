@@ -28,16 +28,13 @@
         "%="은 값그대로출력(태그있으면태그까지) 태그없이값출력"%-"
       </li> -->
       <li class="item <%= item.category %>">
-        <a
-          href="<%= item.image %>"
-          data-fancybox="<%= item.category %>"
-          data-caption="<%= item.title %>"
-        >
+        <a href="<%= item.image %>" data-fancybox="<%= item.category %>" data-caption="<%= item.title %><br/><br/><%= item.desc %>">
           <div class="img">
             <img src="<%= item.image %>" alt="" />
           </div>
           <div class="txt">
             <h2 class="blogTitle"><%= item.title %></h2>
+            <p class="userName"><%= item.userName %></p>
             <p class="date"><%= item.date %></p>
           </div>
         </a>

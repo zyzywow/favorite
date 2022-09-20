@@ -4,8 +4,9 @@
   <div id="contents">
     <h2 class="title"><%= title %></h2>
     <div class="insertBtn randomBtn">
-      <a href="/musicList">RANDOM</a>
+      <a href="/musicList"><span class="material-icons"> shuffle </span>RANDOM</a>
     </div>
+    <!-- <div class="close"><span class="material-icons"> cancel </span></div> -->
     <ul class="musicList">
       <!-- <div></div> -->
     </ul>
@@ -18,16 +19,10 @@
   // let keyword = randomSearch;
   const musicList = $("#contents .musicList");
 
-  let randomNum = Math.floor(Math.random() * (16 - 1) + 1);
+  let randomNum = Math.floor(Math.random() * (11 - 1) + 1);
   // ===============랜덤페이지=============
 
-  const randomData = [
-    "citypop",
-    "시티팝",
-    "일본 시티팝",
-    "한국 시티팝",
-    "japanese citypop",
-  ];
+  const randomData = ["citypop", "시티팝", "일본 시티팝", "한국 시티팝"];
   function randomValueFromArray(array) {
     const random = Math.floor(Math.random() * array.length);
     return array[random];
@@ -36,8 +31,23 @@
   // ===============랜덤검색어=============
 
   $(".musicList").on("click", ".musicItem", function () {
-    // $(this).addClass("open").siblings().removeClass("open");
     $(this).toggleClass("open");
+    console.log($(this));
+    // $(this).addClass("open").siblings().removeClass("open");
+    // $(this).toggleClass("open");
+    // if ($(this).hasClass("open")) {
+    //   $(this).on("click", function () {
+    //     $(this).removeClass("open");
+    //     // console.log($(this).parents());
+    //   });
+    // }
+
+    // $(this).on("click", function () {
+    //   if ($(this).hasClass("open")) {
+    //     $(this).parents(".musicItem").removeClass("open");
+    //     console.log($(this).parents(".musicItem"));
+    //   }
+    // });
   });
 
   // 이벤트위임===================
@@ -97,38 +107,39 @@
       const dateMins = mins < 10 ? "0" + mins : mins;
       const dateSeconds = seconds < 10 ? "0" + seconds : seconds;
       // -----------재생시간 디스플레이 변경
-      // console.log(item.url);
+
       const itemUrl = item.url;
       const itemUrl02 = itemUrl.replace("http://www.youtube.com/watch?v=", "");
 
-      tempHtml += `<li class="musicItem" >
+      tempHtml += `<li class="musicItem">
           <a href=""  >
-            <div class="img"><img src="${item.thumbnail}" alt="thumbnail"/>
+            <div class="img"><img src=" https://img.youtube.com/vi/${itemUrl02}/mqdefault.jpg" alt="thumbnail"/>
               <p class="playTime">${dateHours}:${dateMins}:${dateSeconds}</p></div>
               <div class="txtBox">
               <div class="musicTitle">${item.title}</div>
               <p class="dateTime">${date.format("YYYY / MM / DD")}</p>
                 </div>
           </a>
-          <div class="detailVideo">
-              <div class="close"><span class="material-icons">
-              cancel
-              </span></div>
-            <iframe class="video" src="http://www.youtube.com/embed/${itemUrl02}" frameborder="0"></iframe></div>
+          <div class="detailVideo" >
+              <iframe class="video" src="http://www.youtube.com/embed/${itemUrl02}?enablejsapi=1&version=3&playerapiid=ytplayer" frameborder="0"></iframe></div>
         </li>
         `;
     });
     musicList.html(tempHtml);
-    // $(".musicItem").on("click", function () {
+
+    // $("#musicItem").on("click", function () {
     //   // $(this).addClass("open").siblings().removeClass("open");
     //   $(this).toggleClass("open");
-    //   // $(".detailVideo").show();
-
-    //   // $(".detailVideo").hide();
     // });
-    // $(".detailVideo .close").on("click", function () {
+
+    // $(".musicItem .detailVideo").on("click", function () {
+    //   // $(this).addClass("open").siblings().removeClass("open");
+    //   console.log("wowowowowowowo");
+    //   $(".musicItem").removeClass("open");
+    // });
+    // $(".detailVideo").on("click", function () {
     //   // console.log("kowkwokwokwo");
-    //   $(".video").stop();
+
     // });
   });
 </script>
