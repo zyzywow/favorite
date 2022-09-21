@@ -304,29 +304,25 @@ app.get("/list", (req, res) => {
       res.render("list", { title: "이미지 게시판", list: result, userInfo: req.user });
     });
 });
+app.get("/randomImage", (req, res) => {
+  res.render("randomImage", { title: "랜덤이미지 게시판", userInfo: req.user });
+});
 app.get("/musicList", (req, res) => {
-  db.collection("blog")
-    .find()
-    .toArray((err, result) => {
-      res.render("musicList", {
-        title: "랜덤음악 게시판",
-        list: result,
-        userInfo: req.user,
-      });
-    });
+  res.render("musicList", { title: "랜덤음악 게시판", userInfo: req.user });
 });
 app.get("/freeList", (req, res) => {
   db.collection("blogFreeInsert")
     .find()
+    // .skip(1)
+    // .limit(1)
     .sort({ id: -1 })
-    .limit(10)
     .toArray((err, result) => {
+      const listAll = result.length;
       console.log(result);
-
+      console.log(listAll);
       res.render("freeList", {
         title: "자유 게시판",
         list: result,
-
         userInfo: req.user,
       });
     });
@@ -371,26 +367,6 @@ app.post("/registerFree", (req, res) => {
     );
   });
 });
-
-app.get("/detail/:id", (req, res) => {
-  const _id = parseInt(req.params.id);
-  db.collection("blog").findOne({ id: _id }, (err, result) => {
-    if (result) {
-      res.render("detail", {
-        title: "detail",
-        data: result,
-        userInfo: req.user,
-      });
-    } else {
-      console.log("error");
-    }
-  });
-});
-// app.post("/summerNoteInsertImg", fileUpload.single("summerNoteImg"), (req, res) => {
-//   cloudinary.uploader.upload(req.file.path, (result) => {
-//     res.json({ cloudinaryImgSrc: result.url });
-//   });
-// });
 
 app.listen(PORT, () => {
   console.log(`${PORT}에서 서버 대기중5`);

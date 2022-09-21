@@ -4,21 +4,13 @@
   <div id="contents">
     <h2 class="title"><%= title %></h2>
     <div class="insertBtn randomBtn">
-      <a href="/musicList"
-        ><span class="material-icons"> shuffle </span>RANDOM</a
-      >
+      <a href="/musicList"><span class="material-icons"> shuffle </span>RANDOM</a>
     </div>
-    <!-- <div class="close"><span class="material-icons"> cancel </span></div> -->
-    <ul class="musicList">
-      <!-- <div></div> -->
-    </ul>
 
-    <!-- <iframe src="http://www.youtube.com/embed/fXjdkWP2kaM" frameborder="0"></iframe> -->
+    <ul class="musicList"></ul>
   </div>
 </main>
 <script>
-  // let apikey = "AIzaSyDjHlSZzZHZzJghpeo4Kxv0waYgZ2Nv640";
-  // let keyword = randomSearch;
   const musicList = $("#contents .musicList");
 
   let randomNum = Math.floor(Math.random() * (11 - 1) + 1);
@@ -32,56 +24,6 @@
   let randomSearch = randomValueFromArray(randomData);
   // ===============랜덤검색어=============
 
-  // $(".musicList").on("click", ".musicItem", function () {
-  //   // $(this).toggleClass("open");
-  //   $(this).addClass("open");
-
-  //   //   // $(this).addClass("open").siblings().removeClass("open");
-  //   //   // $(this).toggleClass("open");
-  //   //   // if ($(this).hasClass("open")) {
-  //   //   //   $(this).on("click", function () {
-  //   //   //     $(this).removeClass("open");
-  //   //   //     // console.log($(this).parents());
-  //   //   //   });
-  //   //   // }
-
-  //   $(".detailVideo").on("click", function () {
-  //     if ($(this).parent().hasClass("open")) {
-  //       // $(this).parent().removeClass("open");
-  //       // $(this).parent().removeClass({ className: "open" });
-  //       console.log($(this).parent());
-  //     }
-  //   });
-  // });
-
-  // 이벤트위임===================
-  //----------------------youtube 검색결과
-  // $.ajax({
-  //   url: "https://www.googleapis.com/youtube/v3/search",
-  //   type: "get",
-  //   dataType: "json",
-  //   data: { part: "snippet", key: apikey, q: keyword, maxResults: 100, type: "video", videoEmbeddable: "true" },
-  // }).done(function (response) {
-  //   console.log(response);
-  //   const youtubeList = response.items;
-  //   let tempHtml = "";
-  //   $.each(youtubeList, function (idx, item) {
-  //     thumbnail = item.snippet.thumbnails.medium.url;
-  //     videoId = item.id.videoId;
-  //     tempHtml += `<li class="musicItem">
-  //         <a href="https://www.youtube.com/watch?v=${videoId}">
-  //           <div class="img"><img src="${thumbnail}" alt="thumbnail"/></div>
-  //             <span class="musicTitle">${item.snippet.title}</span>
-  //         </a>
-
-  //       </li>`;
-  //   });
-  //   musicList.html(tempHtml);
-  // });
-
-  // function v_link(videoId) {
-  //   location.href = `https://www.youtube.com/watch?v=${videoId}`;
-  // }
   $.ajax({
     url: "https://dapi.kakao.com/v2/search/vclip",
     headers: {
@@ -94,8 +36,6 @@
       page: randomNum,
     },
   }).done(function (response) {
-    // console.log(response);
-    // console.log(response.documents);
     console.log(randomSearch);
     console.log(randomNum);
     const searchItem = response.documents;
@@ -125,32 +65,21 @@
                 </div>
           </a>
           <div class="detailVideo" >
-                  <iframe class="video" src="http://www.youtube.com/embed/${itemUrl02}?enablejsapi=1&version=3&playerapiid=ytplayer" frameborder="0"></iframe>
+            <span class="videoClose">이 창을 닫으시려면 검은배경을 눌러주세요.</span>
+            <iframe class="video" src="http://www.youtube.com/embed/${itemUrl02}?enablejsapi=1&version=3&playerapiid=ytplayer" frameborder="0"></iframe>;
            </div>
-
         </li>
-       
         `;
     });
     musicList.html(tempHtml);
     $(".musicItem").on("click", function () {
-      const currentVideoBox = $(this).children(".detailVideo");
+      const currentVideoBox = $(this).find(".detailVideo");
       currentVideoBox.toggleClass("open");
-      const currentVideo = currentVideoBox.children(".video");
-      // $(this).children(".detailVideo").toggleClass("open");
-      console.log(this);
-      currentVideo.append(currentVideo);
-
-      // $(".detailVideo").append(
-      //   `<iframe class="video" src="http://www.youtube.com/embed/7GXbDSa9Llc?enablejsapi=1&version=3&playerapiid=ytplayer" frameborder="0"></iframe>`
-      // );
-
-      // this 해당동영상 값만넣으면됨.
+      const currentVideo = $(this).find(".video");
+      currentVideoBox.append(currentVideo);
       if (!$(".detailVideo").hasClass("open")) {
-        console.log("wowowowowowowowowo");
-        $(".detailVideo").empty();
+        $(".detailVideo:empty").empty();
       }
-      return false;
     });
   });
 </script>

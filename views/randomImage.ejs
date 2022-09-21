@@ -1,0 +1,81 @@
+<%- include("include/header"); %>
+
+<main id="main">
+  <div id="contents">
+    <h2 class="title"><%= title %></h2>
+    <div class="insertBtn randomBtn">
+      <a href="/randomImage"><span class="material-icons"> shuffle </span>RANDOM</a>
+    </div>
+
+    <!-- <nav id="filter">
+      <h2 class="blind">filtering menu</h2>
+      <ul class="filterList">
+        <li class="on" data-filter="item">ALL</li>
+        <li data-filter="illustration">illustration</li>
+        <li data-filter="animetion">animetion</li>
+        <li data-filter="photo">photo</li>
+      </ul>
+    </nav> -->
+    <ul class="randomImageList"></ul>
+  </div>
+</main>
+<script>
+  const randomImageList = $("#contents .randomImageList");
+
+  let grid = null;
+
+  randomImageList.imagesLoaded().always(function () {
+    grid = randomImageList.isotope({
+      itemSelector: ".item",
+      percentPosition: true,
+      layoutMode: "masonry",
+    });
+  });
+
+  let randomNum = Math.floor(Math.random() * (11 - 1) + 1);
+  // ===============랜덤페이지=============
+
+  const randomData = ["시티팝 애니메이션", "시티팝 배경화면", "시티팝 일러스트"];
+  function randomValueFromArray(array) {
+    const random = Math.floor(Math.random() * array.length);
+    return array[random];
+  }
+  let randomSearch = randomValueFromArray(randomData);
+  // ===============랜덤검색어=============
+
+  $.ajax({
+    url: "https://dapi.kakao.com/v2/search/image",
+    headers: {
+      Authorization: "KakaoAK 1124f949dc2e28f83bf07baca1342758",
+    },
+    data: {
+      type: "get",
+      size: 20,
+      query: randomSearch,
+      page: randomNum,
+    },
+  }).done(function (response) {
+    console.log(response);
+    console.log(randomSearch);
+    console.log(randomNum);
+    const searchItem = response.documents;
+    // const dd = ()
+    // console.log(searchItem);
+    // ============================이미지엑박해결하기
+
+    let tempHtml = "";
+
+    $.each(searchItem, function (idx, item) {
+      tempHtml += `<li class="item">
+          <a href="">
+            <div class="img"><img src="${item.image_url}" alt="thumbnail"/>
+              </div>
+          </a>
+        </li>
+        `;
+    });
+    randomImageList.html(tempHtml);
+  });
+</script>
+
+<%- include("include/footer");%>
