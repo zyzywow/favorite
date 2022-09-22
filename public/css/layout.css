@@ -138,6 +138,7 @@ a {
 }
 #contents .insertBtn {
   position: absolute;
+  display: flex;
   top: 50px;
   right: 0;
 }

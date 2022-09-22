@@ -279,7 +279,7 @@ app.post("/register", fileUpload.single("image"), (req, res) => {
           category: category,
           desc: desc,
           userName: userName,
-          // point: point,
+
           image: result.url,
           id: count,
         },
@@ -327,7 +327,7 @@ app.get("/freeList", (req, res) => {
       });
     });
 });
-app.get("/freeDetail/:id", (req, res) => {
+app.get("/freeDetail/:id", isLogged, (req, res) => {
   const _id = parseInt(req.params.id);
   db.collection("blogFreeInsert").findOne({ id: _id }, (err, result) => {
     if (result) {
@@ -345,7 +345,7 @@ app.post("/registerFree", (req, res) => {
   const userName = req.user.userName;
   const title = req.body.title;
   const desc = req.body.desc;
-
+  const modifyDate = "";
   db.collection("blogFreeCounter").findOne({ name: "total" }, (err, result01) => {
     const count = result01.count;
     db.collection("blogFreeInsert").insertOne(
@@ -353,6 +353,7 @@ app.post("/registerFree", (req, res) => {
         title: title,
         userName: userName,
         date: dateNow,
+        modifyDate: modifyDate,
         desc: desc,
         id: count,
       },
@@ -366,6 +367,44 @@ app.post("/registerFree", (req, res) => {
       }
     );
   });
+});
+app.get("/modifyFree/:id", isLogged, (req, res) => {
+  // console.log(req.user);
+
+  const _id = parseInt(req.params.id);
+  db.collection("blogFreeInsert").findOne({ id: _id }, (err, result) => {
+    if (result) {
+      res.render("modifyFree", { title: "modifyFree", data: result, userInfo: req.user });
+    } else {
+      console.log("error");
+    }
+  });
+});
+app.post("/modifyFree", (req, res) => {
+  const title = req.body.title;
+  const userName = req.user.userName;
+  const desc = req.body.desc;
+  const date = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
+  const time = new Date().toTimeString().split(" ")[0];
+  const modifyDate = date + " " + time;
+  const id = req.body.id;
+  db.collection("blogFreeInsert").update(
+    { id: id },
+    {
+      $set: {
+        title: title,
+        modifyDate: modifyDate,
+        desc: desc,
+      },
+    },
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      // console.log(result);
+      res.send(`<script>alert("게시물 수정이 완료 되었습니다.");location.href="/";</script>`);
+    }
+  );
 });
 
 app.listen(PORT, () => {
