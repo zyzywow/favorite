@@ -34,7 +34,7 @@
       <li class="item <%= item.category %>">
         <a href="<%= item.image %>" data-fancybox="<%= item.category %>" data-caption="<%= item.title %><br/><br/><%= item.desc %>">
           <div class="img">
-            <img src="<%= item.image %>" alt="" />
+            <img src="<%= item.image %>" alt="thumbnail" />
           </div>
           <div class="txt">
             <h2 class="blogTitle"><%= item.title %></h2>
@@ -51,7 +51,7 @@
   const itemList = $("#contents .blogList");
   const filterList = $("#filter li");
   let grid = null;
-
+  itemList.imagesLoaded().progress(function (instance, image) {});
   itemList.imagesLoaded().always(function () {
     grid = itemList.isotope({
       itemSelector: ".item",

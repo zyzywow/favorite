@@ -11,27 +11,17 @@
       <h2 class="blind">filtering menu</h2>
       <ul class="filterList">
         <li class="on" data-filter="item">ALL</li>
-        <li data-filter="illustration">illustration</li>
-        <li data-filter="animetion">animetion</li>
-        <li data-filter="photo">photo</li>
+        <li data-filter="네이버블로그">NAVERBLOG</li>
+        <li data-filter="티스토리">TSTORY</li>
       </ul>
     </nav> -->
-    <ul class="randomImageList"></ul>
+    <ul class="blogList randomImageList"></ul>
   </div>
 </main>
 <script>
-  const randomImageList = $("#contents .randomImageList");
-
+  const itemList = $("#contents .blogList");
+  // const filterList = $("#filter li");
   let grid = null;
-
-  randomImageList.imagesLoaded().always(function () {
-    grid = randomImageList.isotope({
-      itemSelector: ".item",
-      percentPosition: true,
-      layoutMode: "masonry",
-    });
-  });
-
   let randomNum = Math.floor(Math.random() * (11 - 1) + 1);
   // ===============랜덤페이지=============
 
@@ -50,31 +40,37 @@
     },
     data: {
       type: "get",
-      size: 20,
+      size: 50,
       query: randomSearch,
       page: randomNum,
     },
   }).done(function (response) {
     console.log(response);
-    console.log(randomSearch);
-    console.log(randomNum);
+    // console.log(randomSearch);
+    // console.log(randomNum);
     const searchItem = response.documents;
-    // const dd = ()
-    // console.log(searchItem);
-    // ============================이미지엑박해결하기
-
     let tempHtml = "";
-
     $.each(searchItem, function (idx, item) {
-      tempHtml += `<li class="item">
-          <a href="">
-            <div class="img"><img src="${item.image_url}" alt="thumbnail"/>
+      tempHtml += `<li class="item randomImage">
+          <a href="${item.image_url}" data-fancybox="${item.collection}" >
+            <div class="img">
+              <img src="${item.image_url}" alt="thumbnail"/>
               </div>
+          
           </a>
         </li>
         `;
     });
-    randomImageList.html(tempHtml);
+
+    itemList.html(tempHtml);
+    itemList.imagesLoaded().progress(function (instance, image) {});
+    itemList.imagesLoaded().always(function () {
+      grid = itemList.isotope({
+        itemSelector: ".item",
+        percentPosition: true,
+        layoutMode: "masonry",
+      });
+    });
   });
 </script>
 
