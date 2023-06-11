@@ -134,7 +134,7 @@ app.get("/logout", (req, res) => {
   }
 });
 app.get("/join", (req, res) => {
-  res.render("join", { title: "join", userInfo: req.user });
+  res.render("join", { title: "회원가입", userInfo: req.user });
 });
 app.post("/idCheck", (req, res) => {
   const userID = req.body.userID;
@@ -191,7 +191,7 @@ app.get("/mypage", isLogged, (req, res) => {
 });
 app.get("/modify", isLogged, (req, res) => {
   // console.log(req.user);
-  res.render("modify", { title: "modify", userInfo: req.user });
+  res.render("modify", { title: "회원정보수정", userInfo: req.user });
 });
 app.post("/modify", (req, res) => {
   const userID = req.body.userID;
@@ -251,7 +251,7 @@ function isLogged(req, res, next) {
 // =====================회원관련===================
 
 app.get("/insert", isLogged, (req, res) => {
-  res.render("insert", { title: "insert", userInfo: req.user });
+  res.render("insert", { title: "글 쓰기", userInfo: req.user });
 });
 app.get("/freeInsert", isLogged, (req, res) => {
   res.render("freeInsert", { title: "freeinsert", userInfo: req.user });
